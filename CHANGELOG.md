@@ -104,7 +104,7 @@ This is the initial release of the TechOps Claude Code Pack. The plugin consolid
 
 **Installation:**
 ```bash
-claude-code plugin install corbinator/devops-ai-toolkit-claude-plugin
+claude-code plugin install CorbinatorX/devops-ai-toolkit-claude-plugin
 ```
 
 **Prerequisites:**

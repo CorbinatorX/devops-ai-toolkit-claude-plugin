@@ -6,7 +6,7 @@ AI-powered Azure DevOps workflows for Claude Code: incident response, work item 
 
 ```bash
 # Add the marketplace (one-time)
-/plugin marketplace add corbinator/devops-ai-toolkit-claude-plugin
+/plugin marketplace add CorbinatorX/devops-ai-toolkit-claude-plugin
 
 # Install the plugin
 /plugin install devops-ai-toolkit@devops-ai-toolkit-claude-plugin
@@ -22,7 +22,7 @@ Add to your project's `.claude/settings.json` to auto-prompt team members:
     "devops-ai-toolkit": {
       "source": {
         "source": "github",
-        "repo": "corbinator/devops-ai-toolkit-claude-plugin"
+        "repo": "CorbinatorX/devops-ai-toolkit-claude-plugin"
       }
     }
   },
@@ -145,7 +145,7 @@ The plugin includes specialized agents for auto-discovery:
 
 ## Support
 
-- **Issues**: https://github.com/corbinator/devops-ai-toolkit-claude-plugin/issues
+- **Issues**: https://github.com/CorbinatorX/devops-ai-toolkit-claude-plugin/issues
 - **Documentation**: See README files in each directory
 
 ## License

@@ -38,7 +38,7 @@ cd /path/to/techops-claudecode-pack
 
 **Future** (once published):
 ```bash
-claude-code plugin install corbinator/devops-ai-toolkit-claude-plugin
+claude-code plugin install CorbinatorX/devops-ai-toolkit-claude-plugin
 ```
 
 ### Step 2: Configure Your Repository
@@ -568,13 +568,13 @@ When plugin updates:
 
 ### Documentation
 
-- **Plugin README**: [techops-claudecode-pack/README.md](https://github.com/corbinator/devops-ai-toolkit-claude-plugin)
+- **Plugin README**: [techops-claudecode-pack/README.md](https://github.com/CorbinatorX/devops-ai-toolkit-claude-plugin)
 - **Shared Modules**: See `shared/*/README.md` for patterns
 - **Changelog**: Track updates in `CHANGELOG.md`
 
 ### Issues
 
-Report issues at: https://github.com/corbinator/devops-ai-toolkit-claude-plugin/issues
+Report issues at: https://github.com/CorbinatorX/devops-ai-toolkit-claude-plugin/issues
 
 ### Getting Help
 
