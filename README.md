@@ -32,6 +32,29 @@ Add to your project's `.claude/settings.json` to auto-prompt team members:
 }
 ```
 
+## Configuration
+
+The plugin works best when you define your project architecture in `.claude/config.json`. This enables:
+- Architecture-aware blueprint generation
+- Code placement aligned with your patterns
+- Convention-following implementations
+- Standards-based code reviews
+
+```bash
+# Copy the example config
+cp .claude/config.example.json .claude/config.json
+
+# Customize for your project
+# Edit .claude/config.json with your:
+# - Project structure (components, layers)
+# - Tech stack (frameworks, versions)
+# - Conventions (naming, indentation)
+# - Patterns (API, application, UI)
+# - Testing setup (commands, coverage)
+```
+
+See [`.claude/README.md`](.claude/README.md) for detailed configuration guide.
+
 ## Features
 
 ### Work Item Commands

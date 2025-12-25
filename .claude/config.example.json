@@ -1,0 +1,244 @@
+{
+  "project": {
+    "name": "{Your Project Name}",
+    "type": "full-stack",
+    "techStack": "python-fastapi-react",
+    "version": "1.0.0",
+    "description": "Multi-service application with Python backend and React frontend"
+  },
+  "architecture": {
+    "pattern": "clean-architecture",
+    "components": {
+      "api": {
+        "path": "api/",
+        "type": "fastapi",
+        "purpose": "HTTP API layer with FastAPI routers and Pydantic models"
+      },
+      "application": {
+        "path": "application/",
+        "type": "python",
+        "purpose": "Business logic layer with repositories, services, and use cases"
+      },
+      "ui": {
+        "path": "ui/",
+        "type": "react-typescript",
+        "purpose": "React TypeScript frontend with Vite"
+      },
+      "infrastructure": {
+        "path": "infra/",
+        "type": "terraform",
+        "purpose": "Azure infrastructure as code"
+      }
+    },
+    "layers": [
+      "UI",
+      "API",
+      "Application",
+      "Infrastructure"
+    ],
+    "featureOrganization": "by-feature"
+  },
+  "conventions": {
+    "naming": {
+      "python": {
+        "classes": "PascalCase",
+        "functions": "snake_case",
+        "methods": "snake_case",
+        "variables": "snake_case",
+        "constants": "UPPER_SNAKE_CASE",
+        "files": "snake_case",
+        "directories": "snake_case"
+      },
+      "typescript": {
+        "components": "PascalCase",
+        "hooks": "useCamelCase",
+        "functions": "camelCase",
+        "variables": "camelCase",
+        "constants": "UPPER_SNAKE_CASE",
+        "files": "PascalCase or kebab-case",
+        "directories": "kebab-case"
+      }
+    },
+    "indentation": {
+      "python": "4 spaces",
+      "typescript": "2 spaces"
+    },
+    "maxLineLength": {
+      "python": 100,
+      "typescript": 100
+    },
+    "typeHints": true,
+    "strictMode": true
+  },
+  "patterns": {
+    "api": {
+      "routers": true,
+      "controllers": true,
+      "pydanticModels": true,
+      "dependencyInjection": "FastAPI Depends",
+      "noBusinessLogic": "All business logic must be in Application layer"
+    },
+    "application": {
+      "repositories": true,
+      "services": true,
+      "useCases": true,
+      "protocols": "Protocol-based interfaces for dependency injection",
+      "factories": "Factory pattern for complex dependencies",
+      "ormModels": "SQLAlchemy 2.0"
+    },
+    "ui": {
+      "hooks": true,
+      "customHooks": true,
+      "stateManagement": "Zustand + TanStack Query",
+      "authentication": "Azure MSAL",
+      "components": {
+        "library": "shadcn/ui",
+        "location": "ui/src/components/ui",
+        "styling": "Tailwind CSS utility classes",
+        "customization": "Edit component files directly (not via npm)",
+        "conventions": [
+          "Use shadcn/ui components for consistent UI",
+          "Extend components by editing the source files",
+          "Use Tailwind utility classes for styling",
+          "Compose complex components from shadcn primitives"
+        ]
+      },
+      "apiClient": {
+        "pattern": "Singleton with Interface (Big Tech Pattern)",
+        "location": "ui/src/features/shared/api/client.ts",
+        "interface": "IApiClient",
+        "singleton": "apiClient",
+        "description": "Module-level singleton with TypeScript interface for dependency injection. Used by Google, Microsoft, and enterprise apps.",
+        "usage": "import { apiClient } from '../features/shared/api/client'",
+        "benefits": [
+          "Centralized authentication via useAuth hook",
+          "Easy mocking in tests via interface",
+          "Type-safe with TypeScript",
+          "No performance overhead",
+          "Simple and maintainable"
+        ],
+        "antiPatterns": [
+          "Do NOT create new ApiClient() instances",
+          "Do NOT use fetch() directly for backend API calls",
+          "Do NOT use React Context for static services"
+        ]
+      }
+    }
+  },
+  "frameworks": {
+    "api": {
+      "framework": "FastAPI",
+      "version": "0.104.1",
+      "orm": "SQLAlchemy 2.0",
+      "validation": "Pydantic v2",
+      "cache": "Redis",
+      "auth": "Azure Identity"
+    },
+    "application": {
+      "framework": "Python",
+      "version": "3.12+",
+      "orm": "SQLAlchemy 2.0",
+      "migrations": "Alembic",
+      "workflows": "Luigi",
+      "logging": "Loguru"
+    },
+    "ui": {
+      "framework": "React",
+      "version": "18.2",
+      "bundler": "Vite",
+      "stateManagement": "Zustand",
+      "dataFetching": "TanStack Query",
+      "routing": "React Router",
+      "styling": "Tailwind CSS",
+      "components": "shadcn/ui",
+      "auth": "Azure MSAL"
+    }
+  },
+  "testing": {
+    "api": {
+      "framework": "pytest",
+      "coverage": 80,
+      "commands": {
+        "test": "cd api && poetry run pytest",
+        "coverage": "cd api && poetry run pytest --cov=src --cov-report=html",
+        "lint": "cd api && poetry run flake8 .",
+        "typeCheck": "cd api && poetry run mypy .",
+        "format": "cd api && poetry run black ."
+      }
+    },
+    "application": {
+      "framework": "pytest",
+      "coverage": 80,
+      "commands": {
+        "test": "cd application && pytest -v --strict-markers",
+        "coverage": "cd application && pytest --cov=. --cov-report=term-missing --cov-report=html",
+        "lint": "cd application && flake8 .",
+        "typeCheck": "cd application && mypy .",
+        "format": "cd application && black --line-length 100 . && isort --profile black --multi-line-output 3 --line-length 100 ."
+      }
+    },
+    "ui": {
+      "framework": "Vitest",
+      "coverage": 80,
+      "commands": {
+        "test": "cd ui && npm test",
+        "build": "cd ui && npm run build",
+        "typeCheck": "cd ui && npm run type-check",
+        "lint": "cd ui && npm run lint",
+        "coverage": "cd ui && npm run test:coverage"
+      }
+    }
+  },
+  "database": {
+    "type": "Azure SQL Server",
+    "migrations": "Alembic",
+    "migrationPath": "application/migrations/",
+    "migrationCommands": {
+      "generate": "cd application && alembic revision --autogenerate -m",
+      "upgrade": "cd application && alembic upgrade head",
+      "downgrade": "cd application && alembic downgrade -1"
+    }
+  },
+  "infrastructure": {
+    "provider": "Azure",
+    "iac": "Terraform",
+    "layers": [
+      "01-azure_infrastructure",
+      "02-entra_id",
+      "03-azure_configuration"
+    ],
+    "commands": {
+      "plan": "terraform plan",
+      "apply": "terraform apply",
+      "init": "terraform init"
+    }
+  },
+  "git": {
+    "prTemplate": ".github/pull_request_template.md",
+    "conventionalCommits": true,
+    "includeAttribution": true,
+    "detectBlueprintRefs": true,
+    "branchNaming": "feature/blueprint-name or fix/issue-description"
+  },
+  "documentation": {
+    "docstrings": true,
+    "jsdoc": false,
+    "swagger": true,
+    "blueprintPath": ".claude/blueprints",
+    "taskPath": ".claude/tasks",
+    "projectDocs": "CLAUDE.md"
+  },
+  "security": {
+    "azureAD": true,
+    "keyVault": true,
+    "noHardcodedSecrets": true,
+    "jwt": true,
+    "rbac": true
+  },
+  "deployment": {
+    "environments": ["dev", "prod"],
+    "cicd": "GitHub Actions",
+    "containerization": "Docker",
+    "orchestration": "Azure App Services"
+  }
+}
