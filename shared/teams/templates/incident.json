@@ -1,0 +1,19 @@
+{
+  "action": "post",
+  "teamId": "{TEAMS_TEAM_ID}",
+  "channelId": "{TEAMS_CHANNEL_ID}",
+  "title": "🚨 Incident Detected",
+  "summary": "{incident_title}",
+  "themeColor": "DC143C",
+  "cardType": "incident",
+  "facts": [
+    { "name": "📌 Work Item", "value": "#{work_item_id}" },
+    { "name": "⚠️ Severity", "value": "{severity}" },
+    { "name": "🔥 Impacted Services", "value": "{impacted_services}" },
+    { "name": "⏱️ Start Time", "value": "{start_time}" },
+    { "name": "🔍 Identified By", "value": "{identification_method}" }
+  ],
+  "description": "{description}",
+  "adoUrl": "https://dev.azure.com/{organization}/{project}/_workitems/edit/{work_item_id}",
+  "workItemId": "{work_item_id}"
+}

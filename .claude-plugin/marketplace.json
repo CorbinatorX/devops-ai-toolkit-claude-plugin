@@ -1,0 +1,16 @@
+{
+  "name": "techops-claudecode-pack",
+  "owner": {
+    "name": "TechOps"
+  },
+  "metadata": {
+    "description": "TechOps commands, agents, and skills for incident response, Azure edge debugging, and structured work item workflows"
+  },
+  "plugins": [
+    {
+      "name": "techops-claudecode-pack",
+      "source": "./",
+      "description": "TechOps commands, agents, and skills for incident response, Azure edge debugging, and structured work item workflows"
+    }
+  ]
+}

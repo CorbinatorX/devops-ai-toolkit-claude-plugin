@@ -1,0 +1,19 @@
+{
+  "action": "post",
+  "teamId": "{TEAMS_TEAM_ID}",
+  "channelId": "{TEAMS_CHANNEL_ID}",
+  "title": "🐛 TechOps Bug Created",
+  "summary": "{bug_title}",
+  "themeColor": "FF6B6B",
+  "cardType": "bug",
+  "facts": [
+    { "name": "📌 Work Item", "value": "#{work_item_id}" },
+    { "name": "⚠️ Severity", "value": "{severity}" },
+    { "name": "📍 Environment", "value": "{environment}" },
+    { "name": "👤 Reported By", "value": "{created_by}" },
+    { "name": "📂 Area", "value": "{area_path}" }
+  ],
+  "description": "{description}",
+  "adoUrl": "https://dev.azure.com/{organization}/{project}/_workitems/edit/{work_item_id}",
+  "workItemId": "{work_item_id}"
+}

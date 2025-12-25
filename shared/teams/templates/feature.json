@@ -1,0 +1,19 @@
+{
+  "action": "post",
+  "teamId": "{TEAMS_TEAM_ID}",
+  "channelId": "{TEAMS_CHANNEL_ID}",
+  "title": "💡 Feature Request Created",
+  "summary": "{feature_title}",
+  "themeColor": "FFD700",
+  "cardType": "feature",
+  "facts": [
+    { "name": "📌 Work Item", "value": "#{work_item_id}" },
+    { "name": "📝 Summary", "value": "{summary}" },
+    { "name": "💎 Value", "value": "{value_why}" },
+    { "name": "👤 Requested By", "value": "{created_by}" },
+    { "name": "📂 Area", "value": "{area_path}" }
+  ],
+  "description": "{description}",
+  "adoUrl": "https://dev.azure.com/{organization}/{project}/_workitems/edit/{work_item_id}",
+  "workItemId": "{work_item_id}"
+}

@@ -1,0 +1,19 @@
+{
+  "action": "post",
+  "teamId": "{TEAMS_TEAM_ID}",
+  "channelId": "{TEAMS_CHANNEL_ID}",
+  "title": "🔧 Technical Debt Item Created",
+  "summary": "{tech_debt_title}",
+  "themeColor": "6B5B95",
+  "cardType": "tech-debt",
+  "facts": [
+    { "name": "📌 Work Item", "value": "#{work_item_id}" },
+    { "name": "⚠️ Business Impact", "value": "{business_impact}" },
+    { "name": "🔨 Technical Risk", "value": "{technical_risk}" },
+    { "name": "📊 Story Points", "value": "{story_points}" },
+    { "name": "🏷️ Impact Areas", "value": "{impact_areas}" }
+  ],
+  "description": "{description}",
+  "adoUrl": "https://dev.azure.com/{organization}/{project}/_workitems/edit/{work_item_id}",
+  "workItemId": "{work_item_id}"
+}

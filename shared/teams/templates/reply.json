@@ -1,0 +1,7 @@
+{
+  "action": "reply",
+  "teamId": "{TEAMS_TEAM_ID}",
+  "channelId": "{TEAMS_CHANNEL_ID}",
+  "messageId": "{TEAMS_MESSAGE_ID}",
+  "content": "{work_item_type} picked up by {user} - new state = {work_item_state}"
+}

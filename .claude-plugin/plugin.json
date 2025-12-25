@@ -1,0 +1,9 @@
+{
+  "name": "devops-ai-toolkit-claude-plugin",
+  "version": "0.3.0",
+  "description": "Claude Code plugin for Azure DevOps workflows: incident response, work item management, and AI-assisted development",
+  "author": {
+    "name": "Corbin Taylor"
+  },
+  "license": "MIT"
+}
