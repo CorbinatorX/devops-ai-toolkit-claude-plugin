@@ -90,7 +90,7 @@ Function: mcp__azure-devops__wit_create_work_item
 
 Parameters:
 - project: string
-- workItemType: string (e.g., "TechOps Bug", "User Story")
+- workItemType: string (e.g., "Bug", "User Story")
 - fields: array of field objects
   [
     {"name": "System.Title", "value": "Title"},
@@ -155,7 +155,7 @@ Function: mcp__azure-devops__search_workitem
 Parameters:
 - searchText: string (search query)
 - project: array (e.g., ["ERM"])
-- workItemType: array (optional, e.g., ["TechOps Bug"])
+- workItemType: array (optional, e.g., ["Bug"])
 - state: array (optional, e.g., ["Active", "In Progress"])
 - top: integer (max results, default: 50)
 
@@ -193,7 +193,7 @@ normalize_ado_work_item(ado_response) -> WorkItem:
   # Map type
   ado_type = ado_response.fields["System.WorkItemType"]
   type = case ado_type:
-    "TechOps Bug" -> "bug"
+    "Bug" -> "bug"
     "User Story" -> "feature"
     "Task" -> "task"
     "Technical Debt Item" -> "tech-debt"
@@ -286,10 +286,10 @@ denormalize_to_ado(fields: UpdateFields) -> ADO_Updates:
 
 ## Work Item Types
 
-### TechOps Bug
+### Bug
 
 ```markdown
-Work Item Type: "TechOps Bug"
+Work Item Type: "Bug"
 Normalized Type: "bug"
 
 Required Fields:
@@ -388,7 +388,7 @@ States: New → Active → In Progress → Resolved → Closed
 **Error**: Work item #{id} is type "{actual_type}", expected "{expected_type}".
 
 **Solution**: Use the appropriate skill for this work item type:
-- TechOps Bug: /pickup-bug
+- Bug: /pickup-bug
 - User Story: /pickup-feature
 ```
 
@@ -428,7 +428,7 @@ States: New → Active → In Progress → Resolved → Closed
    - id: 25123
    - expand: "relations"
 
-2. Validate type == "TechOps Bug"
+2. Validate type == "Bug"
 
 3. Normalize to WorkItem model
 

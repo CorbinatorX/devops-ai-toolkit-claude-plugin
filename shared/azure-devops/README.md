@@ -15,7 +15,7 @@ All Skills and commands should read Azure DevOps configuration from `.claude/tec
 ```bash
 # Read configuration
 if [ ! -f ".claude/techops-config.json" ]; then
-    echo "❌ Configuration not found. Please run: /configure-techops"
+    echo "❌ Configuration not found. Please run: /configure"
     exit 1
 fi
 
@@ -29,7 +29,7 @@ CONTRIBUTOR=$(jq -r '.contributor' .claude/techops-config.json)
 
 **Note**: Project details (name, description, tech stack) should be read from `.claude/config.json` to avoid duplication.
 
-**Configuration created by**: `/configure-techops` command
+**Configuration created by**: `/configure` command
 
 ### Fallback Constants (Legacy)
 
@@ -142,12 +142,12 @@ if severity not in [1, 2, 3, 4]:
 ### Validate Work Item Type
 
 ```markdown
-For /pickup-bug: Must be "TechOps Bug" (exact case)
+For /pickup-bug: Must be "Bug" (exact case)
 For /pickup-feature: Must be "User Story" (exact case)
 
 Pattern:
 work_item_type = work_item["fields"]["System.WorkItemType"]
-if work_item_type != "TechOps Bug":
+if work_item_type != "Bug":
     return error message
 ```
 
@@ -221,7 +221,7 @@ This might be due to:
 | System.State | String | New, Active, In Progress, Resolved, Closed |
 | System.AssignedTo | Identity | Requires identity ID from get_identity_ids |
 | System.Description | HTML | Large text field, format: "Html" |
-| System.WorkItemType | String | TechOps Bug, User Story, Task, etc. |
+| System.WorkItemType | String | Bug, User Story, Task, etc. |
 | System.AreaPath | String | Use backslash: ERM\\Devops |
 | System.IterationPath | String | Use backslash: ERM\\dops-backlog |
 | System.CreatedDate | DateTime | ISO 8601 format |
@@ -271,7 +271,7 @@ This Skill uses Azure DevOps MCP tools for work item operations.
 
 When implementing Skills that use Azure DevOps:
 
-1. **Test with real work item**: Use an actual TechOps Bug or User Story
+1. **Test with real work item**: Use an actual Bug or User Story
 2. **Test error cases**: Non-existent ID, wrong work item type, closed states
 3. **Test identity resolution**: Verify "Corbin Taylor" resolves to valid ID
 4. **Test state transitions**: Verify transitions are valid
@@ -283,7 +283,7 @@ When implementing Skills that use Azure DevOps:
 
 ```markdown
 1. Get work item with expand="relations"
-2. Validate type is "TechOps Bug"
+2. Validate type is "Bug"
 3. Get identity ID for "Corbin Taylor"
 4. Update state to "In Progress" and assign
 5. Add comment documenting pickup
@@ -296,7 +296,7 @@ Use mcp__azure-devops__wit_create_work_item:
 
 Parameters:
 - project: "ERM"
-- workItemType: "TechOps Bug"
+- workItemType: "Bug"
 - fields: [
     {"name": "System.Title", "value": "Bug title"},
     {"name": "System.Description", "value": "Description", "format": "Html"},
@@ -313,7 +313,7 @@ Use mcp__azure-devops__search_workitem:
 Parameters:
 - searchText: "search query"
 - project: ["ERM"]
-- workItemType: ["TechOps Bug"]
+- workItemType: ["Bug"]
 - state: ["Active", "In Progress"]
 - top: 10
 ```

@@ -79,7 +79,7 @@ Teams uses the **MessageCard** format for webhook messages.
 
 ### Pattern 1: Bug Notification
 
-**Use Case**: Notify team when new TechOps Bug is created
+**Use Case**: Notify team when new Bug is created
 
 **Template**: `.claude/shared/teams/templates/bug_card.json`
 
@@ -88,10 +88,10 @@ Teams uses the **MessageCard** format for webhook messages.
   "@type": "MessageCard",
   "@context": "https://schema.org/extensions",
   "themeColor": "FF0000",
-  "summary": "New TechOps Bug: {{title}}",
+  "summary": "New Bug: {{title}}",
   "sections": [
     {
-      "activityTitle": "🐛 TechOps Bug #{{work_item_id}}",
+      "activityTitle": "🐛 Bug #{{work_item_id}}",
       "activitySubtitle": "{{title}}",
       "facts": [
         {"name": "Severity", "value": "{{severity_text}}"},

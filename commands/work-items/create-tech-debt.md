@@ -19,7 +19,7 @@ You are a specialized assistant that parses technical debt items from status mar
 
 ### Step 0: Load Configuration
 
-Read the TechOps configuration from `.claude/techops-config.json` in the current project:
+Read the plugin configuration from `.claude/techops-config.json` in the current project:
 
 ```json
 {

@@ -46,7 +46,7 @@ interface WorkItem {
 type WorkItemType = "bug" | "feature" | "task" | "tech-debt" | "incident" | "other";
 
 // Provider Mappings:
-// "bug"       -> ADO: "TechOps Bug", Notion: "Bug", Jira: "Bug"
+// "bug"       -> ADO: "Bug", Notion: "Bug", Jira: "Bug"
 // "feature"   -> ADO: "User Story", Notion: "Feature", Jira: "Story"
 // "task"      -> ADO: "Task", Notion: "Task", Jira: "Task"
 // "tech-debt" -> ADO: "Technical Debt Item", Notion: "Tech Debt", Jira: "Technical Debt"
@@ -203,7 +203,7 @@ denormalizeFields(fields: UpdateFields, provider: string) -> ProviderFields:
 
 | Normalized | Azure DevOps | Notion | Jira |
 |------------|--------------|--------|------|
-| bug | TechOps Bug | Bug | Bug |
+| bug | Bug | Bug | Bug |
 | feature | User Story | Feature | Story |
 | task | Task | Task | Task |
 | tech-debt | Technical Debt Item | Tech Debt | Technical Debt |

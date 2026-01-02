@@ -1,8 +1,8 @@
 # /create-bug
 
-**Role:** TechOps Bug Reporter for Azure DevOps and Microsoft Teams
+**Role:** Bug Reporter for Azure DevOps and Microsoft Teams
 
-You are a specialized assistant that creates "TechOps Bug" work items in Azure DevOps and posts formatted notifications to Microsoft Teams.
+You are a specialized assistant that creates Bug work items in Azure DevOps and posts formatted notifications to Microsoft Teams.
 
 ## Usage
 
@@ -21,7 +21,7 @@ The command will interactively prompt you for bug details.
 
 ### Step 0: Load Configuration
 
-Read the TechOps configuration from `.claude/techops-config.json` in the current project:
+Read the plugin configuration from `.claude/techops-config.json` in the current project:
 
 ```json
 {
@@ -80,13 +80,13 @@ Use `mcp__azure-devops__wit_create_work_item` to create the bug:
 
 **Project**: `ERM`
 
-**Work Item Type**: `TechOps Bug` (note: capital 'O' in TechOps)
+**Work Item Type**: `Bug`
 
 **Fields**:
 ```json
 {
   "project": "ERM",
-  "workItemType": "TechOps Bug",
+  "workItemType": "Bug",
   "fields": [
     {"name": "System.Title", "value": "<user-provided-title>"},
     {"name": "System.Description", "value": "<user-provided-description>", "format": "Html"},
@@ -269,7 +269,7 @@ Use `mcp__azure-devops__wit_update_work_item` to add the Teams message ID:
 Output a clear success message with:
 
 ```markdown
-## ✅ TechOps Bug Created Successfully
+## ✅ Bug Created Successfully
 
 **Work Item**: #{work_item_id}
 **Link**: https://dev.azure.com/{organization}/{project}/_workitems/edit/{work_item_id}
@@ -323,7 +323,7 @@ The bug has been posted to the {Product} Teams channel. Team members can:
 ## DO
 
 ✅ Prompt user interactively for all required fields
-✅ Use work item type "TechOps Bug" (capital 'O')
+✅ Use work item type "Bug"
 ✅ Use backslashes in Area/Iteration paths (`ERM\Devops`)
 ✅ Map severity to numeric values (1-4)
 ✅ Use HTML format for Description and ReproSteps fields
@@ -336,7 +336,7 @@ The bug has been posted to the {Product} Teams channel. Team members can:
 
 ## DO NOT
 
-❌ Use "Techops Bug" (lowercase 'o') - must be "TechOps Bug"
+❌ Use incorrect work item type names
 ❌ Use forward slashes in paths (`ERM/Devops` is wrong)
 ❌ Skip required fields (TechOpsSpawnedFromIncident, TechOpsFixContained)
 ❌ Use plain text format for Description/ReproSteps (must be Html)
@@ -350,7 +350,7 @@ The bug has been posted to the {Product} Teams channel. Team members can:
 
 ### ADO Work Item Creation Fails
 ```markdown
-## ❌ Failed to Create TechOps Bug
+## ❌ Failed to Create Bug
 
 **Error**: {error_message}
 
@@ -365,7 +365,7 @@ Please try again or create the work item manually in Azure DevOps.
 
 ### Teams Posting Fails
 ```markdown
-## ⚠️ TechOps Bug Created (Teams Notification Failed)
+## ⚠️ Bug Created (Teams Notification Failed)
 
 **Work Item**: #{work_item_id}
 **Link**: https://dev.azure.com/{organization}/{project}/_workitems/edit/{work_item_id}
@@ -386,7 +386,7 @@ Please manually share the link in the Teams channel if needed.
 
 ## Notes
 
-1. **Work Item Type Name**: The exact name is "TechOps Bug" with capital 'O'. Using "Techops Bug" will fail.
+1. **Work Item Type Name**: The exact name is "Bug". Use the correct case for your Azure DevOps instance.
 2. **Path Format**: Area and Iteration paths must use backslashes (`\`), not forward slashes (`/`)
 3. **HTML Format**: Description and ReproSteps fields require `"format": "Html"` parameter
 4. **Severity Values**: Must use format `"1 - Critical"`, `"2 - High"`, `"3 - Medium"`, `"4 - Low"` (not just "Critical", "High", etc.)

@@ -1,5 +1,5 @@
 ---
-name: techops-triager
+name: ops-triager
 description: Specialized agent for incident triage, log analysis, and initial investigation of production issues
 auto_discover:
   - "incident"
@@ -11,7 +11,7 @@ auto_discover:
   - "investigate issue"
 ---
 
-# TechOps Triager Agent
+# Ops Triager Agent
 
 ## Purpose
 
@@ -161,7 +161,7 @@ Rank by likelihood based on available evidence.
 - `/afd-waf-troubleshoot` - For Azure Front Door or WAF issues
 - Custom playbook based on pattern
 
-## Integration with TechOps Workflows
+## Integration with DevOps Workflows
 
 **Creates work items:**
 - Uses `/create-incident` command for Azure DevOps incident tracking

@@ -337,7 +337,7 @@ When implementing Skills that use git:
 
 | Work Item Type | Prefix | Example |
 |----------------|--------|---------|
-| TechOps Bug | `bug/` | `bug/25123-feature-flags-dont-display` |
+| Bug | `bug/` | `bug/25123-feature-flags-dont-display` |
 | User Story | `feature/` | `feature/25200-user-authentication` |
 | Task | `task/` | `task/25300-update-dependencies` |
 | Blueprint | `feature/` | `feature/blueprint-payment-service` |

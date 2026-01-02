@@ -515,7 +515,7 @@ Please verify:
 Work item #{id} is type "{type}", but /pickup-tech-debt requires "Technical Debt Item".
 
 Use instead:
-- /pickup-bug for "TechOps Bug" work items
+- /pickup-bug for "Bug" work items
 - /pickup-feature for "User Story" work items
 - Contact team if work item type should be Technical Debt Item
 ```
@@ -581,7 +581,7 @@ Possible causes:
 - Link PR back to work item
 
 **Related Skills:**
-- `pickup-bug` - Similar workflow for TechOps Bug work items
+- `pickup-bug` - Similar workflow for Bug work items
 - `pickup-feature` - Similar workflow for User Story work items
 - `implement-task` - For implementing tasks from blueprints
 

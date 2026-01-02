@@ -1,36 +1,50 @@
-# DevOps AI Toolkit - Claude Code Plugin
+# Agentic Toolkit - Claude Code Plugin
 
-AI-powered Azure DevOps workflows for Claude Code: incident response, work item management, structured development workflows, and automated quality validation.
+AI-powered DevOps workflows for Claude Code: work item management, incident response, structured development workflows, and automated quality validation.
 
 ## Installation
 
+### User Scope (Recommended)
+
+Install at user scope to make the plugin available across all your projects:
+
 ```bash
 # Add the marketplace (one-time)
-/plugin marketplace add CorbinatorX/devops-ai-toolkit-claude-plugin
+/plugin marketplace add CorbinatorX/agentic-toolkit
 
-# Install the plugin
-/plugin install devops-ai-toolkit@devops-ai-toolkit-claude-plugin
+# Install the plugin at user scope
+/plugin install agentic-toolkit@agentic-toolkit --scope user
 ```
 
-### Auto-Install for Projects
+### Project Scope (Team Sharing)
 
-Add to your project's `.claude/settings.json` to auto-prompt team members:
+Add to your project's `.claude/settings.json` to share with team members:
 
 ```json
 {
   "extraKnownMarketplaces": {
-    "devops-ai-toolkit": {
+    "agentic-toolkit": {
       "source": {
         "source": "github",
-        "repo": "CorbinatorX/devops-ai-toolkit-claude-plugin"
+        "repo": "CorbinatorX/agentic-toolkit"
       }
     }
   },
   "enabledPlugins": {
-    "devops-ai-toolkit@devops-ai-toolkit-claude-plugin": true
+    "agentic-toolkit@agentic-toolkit": true
   }
 }
 ```
+
+## Per-Repository Configuration
+
+The plugin reads configuration from each project's `.claude/` directory, allowing different settings per repo while using the same globally-installed plugin.
+
+**Configuration files:**
+- `.claude/config.json` - Project architecture, conventions, patterns
+- `.claude/techops-config.json` - Work item provider settings, Teams integration
+
+Run `/configure` in any project to set up the configuration interactively.
 
 ## Configuration
 
@@ -58,7 +72,7 @@ See [`.claude/README.md`](.claude/README.md) for detailed configuration guide.
 ## Features
 
 ### Work Item Commands
-- `/create-techops-bug` - Create TechOps Bug work items in Azure DevOps
+- `/create-bug` - Create Bug work items in Azure DevOps
 - `/create-incident` - Create incident work items with Teams notification
 - `/create-tech-debt` - Parse status files and create tech debt items
 - `/create-feature-request` - Create feature request work items
@@ -148,7 +162,7 @@ See individual module READMEs in `shared/` for detailed usage patterns.
 
 The plugin includes specialized agents for auto-discovery:
 
-- **techops-triager** - Incident triage and log analysis
+- **ops-triager** - Incident triage and log analysis
 - **azure-edge-specialist** - Azure Front Door, WAF, and edge networking issues
 - **dotnet-performance-analyst** - .NET application performance and YARP debugging
 

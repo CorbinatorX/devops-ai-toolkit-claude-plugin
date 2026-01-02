@@ -45,7 +45,7 @@ Complete field mapping reference between normalized fields and provider-specific
 
 | Normalized | Azure DevOps | Notion | Jira |
 |------------|--------------|--------|------|
-| bug | TechOps Bug | Bug | Bug |
+| bug | Bug | Bug | Bug |
 
 **Bug-Specific Fields:**
 

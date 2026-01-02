@@ -2,7 +2,7 @@
   "action": "post",
   "teamId": "{TEAMS_TEAM_ID}",
   "channelId": "{TEAMS_CHANNEL_ID}",
-  "title": "🐛 TechOps Bug Created",
+  "title": "🐛 Bug Created",
   "summary": "{bug_title}",
   "themeColor": "FF6B6B",
   "cardType": "bug",

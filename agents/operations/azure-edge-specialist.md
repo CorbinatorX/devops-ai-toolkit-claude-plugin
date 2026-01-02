@@ -362,14 +362,14 @@ AzureDiagnostics
 - Use specific paths when possible
 - Consider cache tags for granular control
 
-## Integration with TechOps Workflows
+## Integration with DevOps Workflows
 
 **Commands:**
 - `/triage-504` - Dedicated 504 timeout playbook
 - `/afd-waf-troubleshoot` - WAF and AFD debugging workflow
 
 **Delegates to:**
-- **TechOps Triager** - For escalation to broader incident investigation
+- **Ops Triager** - For escalation to broader incident investigation
 - **.NET Performance Analyst** - If 504s caused by backend performance
 
 **Escalation Criteria:**

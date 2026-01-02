@@ -1,13 +1,13 @@
-# /configure-techops
+# /configure
 
-**Role:** TechOps Plugin Configuration Wizard
+**Role:** Plugin Configuration Wizard
 
-Interactive wizard to configure repo-specific TechOps context for use with Skills and commands.
+Interactive wizard to configure repo-specific context for use with Skills and commands.
 
 ## Usage
 
 ```bash
-/configure-techops
+/configure
 ```
 
 **No arguments required** - The command will guide you through interactive prompts.
@@ -403,7 +403,7 @@ Skills and commands read this configuration to customize behavior:
    - Area Path: `$AREA_PATH`
    - Assigned To: `$CONTRIBUTOR`
 
-**Fallback**: If `.claude/techops-config.json` doesn't exist, Skills should prompt user to run `/configure-techops` first.
+**Fallback**: If `.claude/techops-config.json` doesn't exist, Skills should prompt user to run `/configure` first.
 ```
 
 ### Example: create-post-mortem Command
@@ -463,9 +463,9 @@ Skills and commands read this configuration to customize behavior:
 
 **Error**: `.claude/techops-config.json` does not exist.
 
-**Solution**: Run `/configure-techops` to create configuration:
+**Solution**: Run `/configure` to create configuration:
 ```bash
-/configure-techops
+/configure
 ```
 
 This will guide you through setting up project details, Azure DevOps, and integrations.
@@ -495,7 +495,7 @@ Azure DevOps MCP tools require escaped backslashes in JSON.
 - `azure_devops.project`
 - `azure_devops.area_path`
 
-**Solution**: Re-run `/configure-techops` to complete configuration.
+**Solution**: Re-run `/configure` to complete configuration.
 ```
 
 ## Updating Configuration
@@ -503,7 +503,7 @@ Azure DevOps MCP tools require escaped backslashes in JSON.
 To update existing configuration:
 
 ```bash
-/configure-techops
+/configure
 ```
 
 **Behavior**:
@@ -621,16 +621,16 @@ After configuration completes:
 
 ## Integration with Plugin
 
-All Skills and commands in the TechOps Claude Code Pack will automatically check for `.claude/techops-config.json` and use it to customize behavior.
+All Skills and commands in the Agentic Toolkit will automatically check for `.claude/techops-config.json` and use it to customize behavior.
 
 **If config doesn't exist**, Skills will display:
 ```markdown
-⚠️ TechOps configuration not found
+⚠️ plugin configuration not found
 
 To use this Skill, first configure your repo context:
 
 ```bash
-/configure-techops
+/configure
 ```
 
 This will prompt you for project details, Azure DevOps settings, and integrations.
@@ -639,4 +639,4 @@ This will prompt you for project details, Azure DevOps settings, and integration
 ## Example Session
 
 ```markdown
-User: /configure-techops
+User: /configure

@@ -1,10 +1,10 @@
-# TechOps Claude Code Pack - Team Adoption Guide
+# Agentic Toolkit - Team Adoption Guide
 
-Complete guide for installing and using the TechOps Claude Code Pack plugin across your team repositories.
+Complete guide for installing and using the Agentic Toolkit plugin across your team repositories.
 
 ## Overview
 
-The TechOps Claude Code Pack is a reusable Claude Code plugin that provides:
+The Agentic Toolkit is a reusable Claude Code plugin that provides:
 - **5 Skills** with auto-discovery (blueprint, pickup-bug, pickup-feature, implement-task, review-task)
 - **13 Slash Commands** for work items, documentation, and operations
 - **6 Specialized Agents** for workflow and operations support
@@ -45,12 +45,12 @@ claude-code plugin install CorbinatorX/devops-ai-toolkit-claude-plugin
 
 Each repository needs a `.claude/techops-config.json` configuration file.
 
-**Option A: Use `/configure-techops` command**
+**Option A: Use `/configure` command**
 
 Run the interactive configuration wizard:
 
 ```bash
-/configure-techops
+/configure
 ```
 
 This will prompt you for:
@@ -136,7 +136,7 @@ Test Skills auto-discovery:
 Test slash command:
 
 ```bash
-/configure-techops
+/configure
 
 # Should show current configuration
 ```
@@ -172,7 +172,7 @@ Skills automatically trigger from natural language. No slash commands needed!
 ```
 
 **What it does**:
-1. Retrieves TechOps Bug from Azure DevOps
+1. Retrieves Bug from Azure DevOps
 2. Assigns to you (from config.contributor)
 3. Creates branch: `bug/25123-{slug}`
 4. Investigates: Reads repro steps, error logs, related code
@@ -264,16 +264,16 @@ Traditional commands remain available for specific operations.
 ### Configuration
 
 ```bash
-/configure-techops
+/configure
 ```
 Configure or update repo-specific settings.
 
 ### Work Items
 
 ```bash
-/create-techops-bug
+/create-bug
 ```
-Create TechOps Bug work item in Azure DevOps.
+Create Bug work item in Azure DevOps.
 
 ```bash
 /create-incident
@@ -367,7 +367,7 @@ Agents can be invoked by Skills or trigger automatically from conversation conte
 
 ### Operations Agents
 
-**techops-triager**
+**ops-triager**
 - **Triggers**: "incident", "triage", "production issue"
 - **Expertise**: Incident analysis, log analysis, KQL queries, P0/P1/P2/P3 severity
 - **Used by**: Standalone or manual invocation
@@ -434,7 +434,7 @@ Agents can be invoked by Skills or trigger automatically from conversation conte
 
 1. **One config per repo**: Each repo has its own `.claude/techops-config.json`
 2. **Don't commit sensitive data**: Use environment variables for webhook URLs
-3. **Keep config updated**: Run `/configure-techops` when project details change
+3. **Keep config updated**: Run `/configure` when project details change
 
 ### Using Skills vs Commands
 
@@ -495,7 +495,7 @@ Review-task Skill enforces these standards:
 
 **Solution**:
 ```bash
-/configure-techops
+/configure
 ```
 
 **Symptom**: "Invalid Area Path Format"

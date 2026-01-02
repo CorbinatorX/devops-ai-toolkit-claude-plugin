@@ -494,14 +494,14 @@ builder.WebHost.ConfigureKestrel(options =>
 ThreadPool.SetMinThreads(workerThreads: 100, completionPortThreads: 100);
 ```
 
-## Integration with TechOps Workflows
+## Integration with DevOps Workflows
 
 **Commands:**
 - `/yarp-timeout-playbook` - Dedicated YARP debugging workflow
 - `/triage-504` - May delegate to this agent if 504s from backend
 
 **Delegates to:**
-- **TechOps Triager** - For broader incident context
+- **Ops Triager** - For broader incident context
 - **Azure Edge Specialist** - If issue is at edge, not backend
 
 **Escalation Criteria:**

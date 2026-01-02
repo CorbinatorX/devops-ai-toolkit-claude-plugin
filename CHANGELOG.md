@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to the TechOps Claude Code Pack will be documented in this file.
+All notable changes to the Agentic Toolkit will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### Skills
 - **blueprint** - Create comprehensive architecture blueprints with 11+ section structure
-- **pickup-bug** - 11-step TechOps Bug workflow (retrieve, assign, branch, investigate, plan, implement, test)
+- **pickup-bug** - 11-step Bug workflow (retrieve, assign, branch, investigate, plan, implement, test)
 - **pickup-feature** - User Story implementation workflow with acceptance criteria validation
 - **implement-task** - Builder-mode task execution from phase files with checkbox tracking
 - **review-task** - Quality validation with 6-category scoring and S/A/B/C/D/F letter grades
@@ -24,14 +24,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **manager** - Quality assurance with automated checks and scoring
 
 **Operations Agents:**
-- **techops-triager** - Incident triage, log analysis, P0-P3 severity assessment
+- **ops-triager** - Incident triage, log analysis, P0-P3 severity assessment
 - **azure-edge-specialist** - Azure Front Door, WAF, 504 timeout debugging
 - **dotnet-performance-analyst** - YARP reverse proxy, .NET performance analysis
 
 #### Commands
 
 **Work Items:**
-- `/create-techops-bug` - Create TechOps Bug work items in Azure DevOps
+- `/create-bug` - Create Bug work items in Azure DevOps
 - `/create-feature-request` - Create feature request work items
 - `/create-incident` - Create incident work items with Teams notification
 - `/create-tech-debt` - Parse status files and create tech debt items
@@ -93,7 +93,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Notes
 
-This is the initial release of the TechOps Claude Code Pack. The plugin consolidates TechOps workflows, skills, and agents into a single reusable package for team-wide adoption.
+This is the initial release of the Agentic Toolkit. The plugin consolidates TechOps workflows, skills, and agents into a single reusable package for team-wide adoption.
 
 **Benefits:**
 - Clean repos (no `.claude/` clutter in every project)

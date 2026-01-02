@@ -21,7 +21,7 @@ The command will interactively prompt you for feature details.
 
 ### Step 0: Load Configuration
 
-Read the TechOps configuration from `.claude/techops-config.json` in the current project:
+Read the plugin configuration from `.claude/techops-config.json` in the current project:
 
 ```json
 {

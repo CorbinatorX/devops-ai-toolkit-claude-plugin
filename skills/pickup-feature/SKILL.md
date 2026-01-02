@@ -614,7 +614,7 @@ Please verify:
 Work item #{id} is type "{type}", but /pickup-feature requires "User Story".
 
 Use instead:
-- /pickup-bug for "TechOps Bug" work items
+- /pickup-bug for "Bug" work items
 - Contact team if work item type should be User Story
 ```
 
@@ -666,7 +666,7 @@ Possible causes:
 - Link PR back to work item
 
 **Related Skills:**
-- `pickup-bug` - Similar workflow for TechOps Bug work items
+- `pickup-bug` - Similar workflow for Bug work items
 - `implement-task` - For implementing tasks from blueprints
 - `blueprint` - For creating architecture blueprints for new features
 

@@ -288,7 +288,7 @@ This Skill uses the work item abstraction layer for provider-agnostic operations
 }
 ```
 
-Or run `/configure-techops` to set up the configuration.
+Or run `/configure` to set up the configuration.
 ```
 
 ### MCP Server Not Available

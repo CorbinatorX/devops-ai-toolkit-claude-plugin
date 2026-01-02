@@ -1,16 +1,16 @@
 {
-  "name": "techops-claudecode-pack",
+  "name": "agentic-toolkit",
   "owner": {
-    "name": "TechOps"
+    "name": "CorbinatorX"
   },
   "metadata": {
-    "description": "TechOps commands, agents, and skills for incident response, Azure edge debugging, and structured work item workflows"
+    "description": "Commands, agents, and skills for DevOps workflows, incident response, and structured work item management"
   },
   "plugins": [
     {
-      "name": "techops-claudecode-pack",
+      "name": "agentic-toolkit",
       "source": "./",
-      "description": "TechOps commands, agents, and skills for incident response, Azure edge debugging, and structured work item workflows"
+      "description": "Commands, agents, and skills for DevOps workflows, incident response, and structured work item management"
     }
   ]
 }

@@ -1,6 +1,6 @@
 ---
 name: pickup-bug
-description: Pick up TechOps Bug work items from Azure DevOps, assign to developer, create git branch, investigate, plan, and implement the fix
+description: Pick up Bug work items from Azure DevOps, assign to developer, create git branch, investigate, plan, and implement the fix
 allowed-tools: Read, Write, Bash, Grep, Glob, Edit
 auto-discover:
   - "pick up bug"
@@ -14,7 +14,7 @@ auto-discover:
 
 ## Purpose
 
-Complete workflow for picking up "TechOps Bug" work items from Azure DevOps. Handles assignment, branch creation, Teams notification, investigation, fix planning, implementation, and testing in a 12-step process.
+Complete workflow for picking up "Bug" work items from Azure DevOps. Handles assignment, branch creation, Teams notification, investigation, fix planning, implementation, and testing in a 12-step process.
 
 This Skill integrates with Azure DevOps for work item management and follows {Product} git branching conventions.
 
@@ -76,7 +76,7 @@ Use `mcp__azure-devops__wit_get_work_item` to fetch bug details.
 ```
 
 **Extract:**
-- Work Item Type (MUST be "TechOps Bug")
+- Work Item Type (MUST be "Bug")
 - Title, State, AssignedTo, Description
 - ReproSteps, Severity (1-4)
 - CreatedDate, ChangedDate
@@ -84,7 +84,7 @@ Use `mcp__azure-devops__wit_get_work_item` to fetch bug details.
 - Custom.TeamsChannelMessageId (for Teams thread reply)
 
 **Validation:**
-- If type is NOT "TechOps Bug", show error and stop
+- If type is NOT "Bug", show error and stop
 - If work item not found, show error
 
 **Parse environment** from ReproSteps: Extract "Environment: {value}" line.
@@ -527,11 +527,11 @@ Please verify:
 ```
 ❌ Invalid Work Item Type
 
-Work item #{id} is type "{type}", but /pickup-bug requires "TechOps Bug".
+Work item #{id} is type "{type}", but /pickup-bug requires "Bug".
 
 Use instead:
 - /pickup-feature for "User Story" work items
-- Contact team if work item type should be TechOps Bug
+- Contact team if work item type should be Bug
 ```
 
 ### Identity Resolution Failed
@@ -604,7 +604,7 @@ Possible causes:
 
 ## Notes
 
-- This Skill is specific to "TechOps Bug" work items
+- This Skill is specific to "Bug" work items
 - Always reassigns to Corbin Taylor regardless of current assignment
 - Branch naming follows {Product} git conventions
 - Fix plans are comprehensive and require approval before implementation

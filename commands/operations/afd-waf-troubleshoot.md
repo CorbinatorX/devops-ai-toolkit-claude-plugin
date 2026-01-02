@@ -568,7 +568,7 @@ AzureDiagnostics
 
 **Related Agents**:
 - **azure-edge-specialist** - Primary agent for this playbook
-- **techops-triager** - For broader incident investigation
+- **ops-triager** - For broader incident investigation
 
 **Escalation**:
 - Azure Support: For AFD platform issues

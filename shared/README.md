@@ -14,7 +14,7 @@ Commands and skills read configuration from `.claude/techops-config.json` in eac
 
 ```json
 {
-  "$comment": "TechOps-specific configuration",
+  "$comment": "Plugin-specific configuration",
   "version": "1.0",
   "contributor": "Your Name",
   "azure_devops": {
@@ -292,7 +292,7 @@ Patterns are designed for Claude Code's environment:
 ```yaml
 ---
 name: pickup-bug
-description: Pick up TechOps Bug work items from Azure DevOps
+description: Pick up Bug work items from Azure DevOps
 allowed-tools: Read, Write, Bash, Grep, Glob
 ---
 
