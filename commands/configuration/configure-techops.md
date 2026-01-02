@@ -45,7 +45,24 @@ This file contains all repo-specific configuration and is referenced by:
 >
 ```
 
-### Step 2: Azure DevOps Configuration
+### Step 2: Work Item Provider Selection
+
+```markdown
+## Work Item Provider
+
+Select your work item management system:
+
+1. **Azure DevOps** - Azure DevOps Boards (default)
+2. **Notion** - Notion database
+3. **Jira** - Atlassian Jira (coming soon)
+
+**Provider** [1/2/3, default: 1]:
+>
+```
+
+Based on selection, proceed to provider-specific configuration.
+
+### Step 2a: Azure DevOps Configuration (if provider = Azure DevOps)
 
 ```markdown
 ## Azure DevOps Configuration
@@ -65,7 +82,116 @@ This file contains all repo-specific configuration and is referenced by:
 
 **Note**: Use double backslashes (`\\`) in paths - this is required by Azure DevOps MCP tools.
 
-### Step 3: Confluence Configuration (Optional)
+### Step 2b: Notion Configuration (if provider = Notion)
+
+```markdown
+## Notion Configuration
+
+**Database ID**: [UUID from your Notion database URL]
+>
+
+Example: If your database URL is:
+`https://notion.so/e45b26718b8d46a2ad9bd5d148845a76?v=...`
+The database ID is: `e45b26718b8d46a2ad9bd5d148845a76`
+
+### Property Mappings
+
+Map your Notion database properties to work item fields.
+Press Enter to accept defaults or type your property name.
+
+**Title Property** [default: "Name"]:
+>
+
+**Status Property** [default: "Status"]:
+>
+
+**Type Property** [default: "Type"]:
+>
+
+**Priority Property** [default: "Priority"]:
+>
+
+**Assignee Property** [default: "Assignee"]:
+>
+
+**Description Property** [default: "Description"]:
+>
+
+### Status Options
+
+What are your Status property options? (comma-separated)
+
+**"To Do" states** [default: "To Do,Backlog"]:
+>
+
+**"In Progress" states** [default: "In Progress"]:
+>
+
+**"Done" states** [default: "Done,Review"]:
+>
+
+**"Closed" states** [default: "Closed,Archived"]:
+>
+```
+
+### Step 2c: Jira Configuration (if provider = Jira)
+
+```markdown
+## Jira Configuration
+
+**Site URL**: [e.g., "https://yourcompany.atlassian.net"]
+>
+
+**Project Key**: [e.g., "PROD", "ENG", "DEVOPS"]
+>
+
+### Issue Type Mappings
+
+Map work item types to your Jira issue types.
+Press Enter to accept defaults.
+
+**Bug Issue Type** [default: "Bug"]:
+>
+
+**Feature Issue Type** [default: "Story"]:
+>
+
+**Task Issue Type** [default: "Task"]:
+>
+
+**Tech Debt Issue Type** [default: "Technical Debt"]:
+>
+```
+
+### Step 3: Git Worktree Configuration (Optional)
+
+```markdown
+## Git Worktree Mode (Optional)
+
+Worktree mode creates isolated working directories for each work item,
+keeping your main workspace clean. Recommended for autonomous agent workflows.
+
+**Enable worktree mode?** [y/N]:
+>
+```
+
+If yes:
+
+```markdown
+**Worktree base path** [default: "/home/{user}/workspace/github/agent-worktrees"]:
+>
+
+**Repository cache path** [default: "/home/{user}/.claude/repos"]:
+>
+
+**Cleanup worktree after PR creation?** [y/N]:
+>
+
+**Cleanup worktree after PR merge?** [Y/n]:
+>
+```
+
+### Step 4: Confluence Configuration (Optional)
 
 ```markdown
 ## Confluence Configuration (Optional)
@@ -82,7 +208,7 @@ This file contains all repo-specific configuration and is referenced by:
 
 Press Enter to skip if not using Confluence.
 
-### Step 4: Teams Integration (Optional)
+### Step 5: Teams Integration (Optional)
 
 ```markdown
 ## Microsoft Teams Integration (Optional)
@@ -95,7 +221,7 @@ Press Enter to skip if not using Teams notifications.
 
 **Security Note**: Webhook URL is sensitive. Consider using environment variables or Azure Key Vault references instead of storing directly in config file.
 
-### Step 5: Tech Stack (Optional)
+### Step 6: Tech Stack (Optional)
 
 ```markdown
 ## Tech Stack (Optional)
@@ -119,6 +245,8 @@ This information is used by the **blueprint** Skill for architecture design.
 
 After prompts complete, generates `.claude/techops-config.json`:
 
+**Example with Azure DevOps (default):**
+
 ```json
 {
   "version": "1.0",
@@ -128,11 +256,31 @@ After prompts complete, generates `.claude/techops-config.json`:
     "contributor": "Corbin Taylor",
     "owning_team": "TechOps"
   },
+  "work_items": {
+    "provider": "azure-devops",
+    "providers": {
+      "azure-devops": {
+        "organization": "{organization}",
+        "project": "{Organization} Platform",
+        "area_path": "Platform\\\\TechOps",
+        "iteration_path": "Platform\\\\2026 Q1"
+      }
+    }
+  },
   "azure_devops": {
     "organization": "{organization}",
     "project": "{Organization} Platform",
     "area_path": "Platform\\\\TechOps",
     "iteration_path": "Platform\\\\2026 Q1"
+  },
+  "worktree": {
+    "enabled": false,
+    "base_path": "/home/{user}/workspace/github/agent-worktrees",
+    "path_pattern": "{repo}-{workitemid}",
+    "repo_cache_path": "/home/{user}/.claude/repos",
+    "cleanup_on_pr_create": false,
+    "cleanup_on_pr_merge": true,
+    "fetch_before_create": true
   },
   "confluence": {
     "cloud_id": "12345678-1234-1234-1234-123456789abc",
@@ -150,7 +298,71 @@ After prompts complete, generates `.claude/techops-config.json`:
   },
   "created_at": "2025-12-19T10:30:00Z",
   "created_by": "claude-code",
-  "plugin_version": "0.1.0"
+  "plugin_version": "0.2.0"
+}
+```
+
+**Example with Notion:**
+
+```json
+{
+  "version": "1.0",
+  "project": {
+    "name": "My Project",
+    "description": "Project description",
+    "contributor": "Your Name",
+    "owning_team": "Engineering"
+  },
+  "work_items": {
+    "provider": "notion",
+    "providers": {
+      "notion": {
+        "database_id": "e45b26718b8d46a2ad9bd5d148845a76",
+        "property_mappings": {
+          "title": "Name",
+          "state": "Status",
+          "assignee": "Assignee",
+          "type": "Type",
+          "priority": "Priority",
+          "description": "Description"
+        },
+        "type_mappings": {
+          "bug": "Bug",
+          "feature": "Feature",
+          "task": "Task",
+          "tech-debt": "Tech Debt"
+        },
+        "state_mappings": {
+          "new": ["To Do", "Backlog"],
+          "active": ["In Progress"],
+          "in-progress": ["In Progress"],
+          "resolved": ["Done", "Review"],
+          "closed": ["Closed", "Archived"]
+        }
+      }
+    }
+  },
+  "worktree": {
+    "enabled": true,
+    "base_path": "/home/{user}/workspace/github/agent-worktrees",
+    "path_pattern": "{repo}-{workitemid}",
+    "repo_cache_path": "/home/{user}/.claude/repos",
+    "cleanup_on_pr_create": false,
+    "cleanup_on_pr_merge": true,
+    "fetch_before_create": true
+  },
+  "teams": {
+    "flow_url": "https://prod-XX.uksouth.logic.azure.com/workflows/..."
+  },
+  "tech_stack": {
+    "frontend": "React + TypeScript",
+    "backend": "Node.js + Express",
+    "infrastructure": "AWS",
+    "cicd": "GitHub Actions"
+  },
+  "created_at": "2026-01-02T10:30:00Z",
+  "created_by": "claude-code",
+  "plugin_version": "0.2.0"
 }
 ```
 
@@ -352,17 +564,27 @@ After configuration completes:
 **Team**: TechOps
 **Contributor**: Corbin Taylor
 
-**Azure DevOps**:
+**Work Item Provider**: {provider}
+- Azure DevOps: Organization, Project, Area Path, Iteration Path
+- Notion: Database ID, Property Mappings
+- Jira: Site URL, Project Key
+
+**Worktree Mode**: {enabled/disabled}
+- Base Path: /home/{user}/workspace/github/agent-worktrees
+- Cleanup on PR merge: Yes
+
+**Azure DevOps** (if selected):
 - Organization: {organization}
 - Project: {Organization} Platform
 - Area Path: Platform\\TechOps
 - Iteration Path: Platform\\2026 Q1
 
-**Confluence**:
-- Space: Tech
-- Post-Mortem Parent: 287244316
+**Notion** (if selected):
+- Database ID: e45b26718b8d46a2ad9bd5d148845a76
+- Properties mapped: Name, Status, Type, Priority, Assignee
 
-**Teams**: ✅ Configured
+**Confluence**: ✅ Configured (optional)
+**Teams**: ✅ Configured (optional)
 
 **Tech Stack**:
 - Frontend: React 18 + TypeScript + Vite
@@ -373,7 +595,8 @@ After configuration completes:
 
 1. **Test configuration** with a Skill:
    ```bash
-   "Pick up bug 25123"
+   "Pick up bug 25123"    # For Azure DevOps
+   "Pick up bug abc123"   # For Notion (page ID)
    ```
 
 2. **Add to .gitignore** (recommended):
@@ -389,6 +612,11 @@ After configuration completes:
 - **pickup-feature** - "Pick up user story 25200"
 - **implement-task** - "Implement task phase1#2.1"
 - **review-task** - "Review task phase1#2.1"
+
+### Work Item Provider Reference
+- Azure DevOps: `.claude/shared/work-items/providers/azure-devops/README.md`
+- Notion: `.claude/shared/work-items/providers/notion/README.md`
+- Jira: `.claude/shared/work-items/providers/jira/README.md`
 ```
 
 ## Integration with Plugin
