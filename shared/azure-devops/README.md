@@ -1,5 +1,9 @@
 # Azure DevOps Helpers for Claude Code Skills
 
+> **Note**: This module is being superseded by the work items abstraction layer.
+> For new implementations, see `.claude/shared/work-items/providers/azure-devops/README.md`.
+> This file is maintained for backward compatibility.
+
 Reusable patterns and helpers for Azure DevOps work item operations in Skills.
 
 ## Project Configuration

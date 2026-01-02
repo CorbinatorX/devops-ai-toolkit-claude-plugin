@@ -242,7 +242,86 @@ Generate branch name: `bug/{work_item_id}-{title-slug}`
 - "Feature flags don't display" → `bug/25123-feature-flags-dont-display`
 - "P95/P99 response times not displaying" → `bug/25099-p95-p99-response-times-not-displaying`
 
-**Git operations:**
+#### Check for Worktree Mode
+
+First, check if worktree mode is enabled in `.claude/techops-config.json`:
+
+```bash
+worktree_enabled=$(cat .claude/techops-config.json 2>/dev/null | jq -r '.worktree.enabled // false')
+```
+
+#### Option A: Worktree Mode (if enabled)
+
+If `worktree.enabled` is `true`, create an isolated worktree for this bug fix:
+
+1. **Get repository from work item**: Extract `Custom.Repository` field from Step 1
+2. **Parse repository name**: Extract repo name from org/repo or URL format
+3. **Create worktree** using algorithm from `.claude/shared/worktree/README.md`
+4. **Change working directory** to worktree path
+5. **Continue implementation** in isolated environment
+
+```bash
+if [ "$worktree_enabled" = "true" ]; then
+    # Get repository from work item
+    repository_field="{work_item.Custom.Repository}"
+
+    # Parse repo name
+    repo_name=$(echo "$repository_field" | sed 's|.*/||' | sed 's|\.git$||')
+
+    # Build paths
+    user=$(whoami)
+    base_path="/home/${user}/workspace/github/agent-worktrees"
+    repo_cache="/home/${user}/.claude/repos"
+    worktree_path="${base_path}/${repo_name}-{work_item_id}"
+    cached_repo="${repo_cache}/${repo_name}.git"
+    branch_name="bug/{work_item_id}-{slug}"
+
+    # Create directories
+    mkdir -p "$base_path" "$repo_cache"
+
+    # Check if worktree already exists
+    if [ -d "$worktree_path" ]; then
+        cd "$worktree_path"
+        echo "Using existing worktree: $worktree_path"
+    else
+        # Ensure bare repo cache exists
+        if [ ! -d "$cached_repo" ]; then
+            repo_url="git@github.com:${repository_field}.git"
+            git clone --bare "$repo_url" "$cached_repo"
+        else
+            git -C "$cached_repo" fetch --all --prune
+        fi
+
+        # Fetch latest main
+        git -C "$cached_repo" fetch origin main:main 2>/dev/null || \
+            git -C "$cached_repo" fetch origin master:master
+
+        # Create worktree with new branch
+        git -C "$cached_repo" worktree add -b "$branch_name" "$worktree_path" main 2>/dev/null || \
+            git -C "$cached_repo" worktree add -b "$branch_name" "$worktree_path" master
+
+        cd "$worktree_path"
+        git push -u origin "$branch_name" 2>/dev/null || true
+    fi
+fi
+```
+
+**Output (worktree mode):**
+
+```markdown
+## Worktree Created
+
+Working in isolated worktree: `/home/{user}/workspace/github/agent-worktrees/{repo}-{work_item_id}`
+
+**Repository:** {repository_field}
+**Branch:** `bug/{work_item_id}-{slug}`
+
+This worktree is independent of your main workspace. All changes will be made here.
+```
+
+#### Option B: Standard Mode (default)
+
+If worktree mode is disabled, use existing behavior:
 
 ```bash
 # Check if branch exists
@@ -255,7 +334,9 @@ git rev-parse --verify bug/{work_item_id}-{slug} 2>/dev/null
 
 Inform user of branch created or checked out.
 
-**Reference**: See `.claude/shared/git/README.md` for branch creation patterns.
+**Reference**:
+- See `.claude/shared/git/README.md` for branch creation patterns
+- See `.claude/shared/worktree/README.md` for worktree patterns
 
 ### Step 9: Generate Comprehensive Fix Plan
 

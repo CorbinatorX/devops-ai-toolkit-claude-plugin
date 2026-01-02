@@ -240,5 +240,62 @@
     "cicd": "GitHub Actions",
     "containerization": "Docker",
     "orchestration": "Azure App Services"
+  },
+  "worktree": {
+    "enabled": false,
+    "base_path": "/home/{user}/workspace/github/agent-worktrees",
+    "path_pattern": "{repo}-{workitemid}",
+    "repo_cache_path": "/home/{user}/.claude/repos",
+    "cleanup_on_pr_create": false,
+    "cleanup_on_pr_merge": true,
+    "fetch_before_create": true
+  },
+  "work_items": {
+    "provider": "azure-devops",
+    "providers": {
+      "azure-devops": {
+        "organization": "{your-organization}",
+        "project": "ERM",
+        "area_path": "ERM\\Devops",
+        "iteration_path": "ERM\\dops-backlog"
+      },
+      "notion": {
+        "database_id": "{your-database-id}",
+        "property_mappings": {
+          "title": "Name",
+          "state": "Status",
+          "assignee": "Assignee",
+          "type": "Type",
+          "priority": "Priority",
+          "description": "Description",
+          "repository": "Repository",
+          "teams_message_id": "Teams Message ID"
+        },
+        "type_mappings": {
+          "bug": "Bug",
+          "feature": "Feature",
+          "task": "Task",
+          "tech-debt": "Tech Debt",
+          "incident": "Incident"
+        },
+        "state_mappings": {
+          "new": ["To Do", "Backlog"],
+          "active": ["In Progress"],
+          "in-progress": ["In Progress"],
+          "resolved": ["Done", "Review"],
+          "closed": ["Closed", "Archived"]
+        }
+      },
+      "jira": {
+        "site_url": "https://{company}.atlassian.net",
+        "project_key": "PROJ",
+        "issue_type_mappings": {
+          "bug": "Bug",
+          "feature": "Story",
+          "task": "Task",
+          "tech-debt": "Technical Debt"
+        }
+      }
+    }
   }
 }

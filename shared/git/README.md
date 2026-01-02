@@ -342,6 +342,49 @@ When implementing Skills that use git:
 | Task | `task/` | `task/25300-update-dependencies` |
 | Blueprint | `feature/` | `feature/blueprint-payment-service` |
 
+## Git Worktree Mode
+
+For advanced autonomous workflows, Skills can create isolated worktrees instead of branches in the current directory. This allows the agent to work independently without affecting the user's workspace.
+
+**Reference**: See `.claude/shared/worktree/README.md` for complete worktree patterns.
+
+### When to Use Worktrees
+
+- Working on multiple items simultaneously
+- Keeping user's workspace clean
+- Autonomous agent development
+- Parallel PR reviews
+
+### Quick Reference
+
+```bash
+# Check if worktree mode is enabled
+worktree_enabled=$(cat .claude/techops-config.json 2>/dev/null | jq -r '.worktree.enabled // false')
+
+if [ "$worktree_enabled" = "true" ]; then
+    # Use worktree mode - see shared/worktree/README.md for full algorithm
+    # Creates isolated directory: /home/{user}/workspace/github/agent-worktrees/{repo}-{id}
+else
+    # Standard mode - create branch in current directory
+    git checkout -b {prefix}/{id}-{slug}
+fi
+```
+
+### Configuration
+
+Worktree settings in `.claude/techops-config.json`:
+
+```json
+{
+  "worktree": {
+    "enabled": true,
+    "base_path": "/home/{user}/workspace/github/agent-worktrees",
+    "path_pattern": "{repo}-{workitemid}",
+    "repo_cache_path": "/home/{user}/.claude/repos"
+  }
+}
+```
+
 ## Notes
 
 - Always lowercase branch names
@@ -351,3 +394,4 @@ When implementing Skills that use git:
 - Checkout existing branches gracefully (no error)
 - Always create branches from main unless specified otherwise
 - Use Bash git commands, not git libraries (for Skills compatibility)
+- Worktree mode is opt-in via configuration
