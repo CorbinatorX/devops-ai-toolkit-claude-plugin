@@ -1,6 +1,6 @@
 {
   "name": "agentic-toolkit",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Claude Code plugin for DevOps workflows: work item management, incident response, and AI-assisted development",
   "author": {
     "name": "CorbinatorX"
