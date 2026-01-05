@@ -46,8 +46,29 @@ Worktree settings are configured in `.claude/techops-config.json`:
 |----------|-------------|---------|
 | `{user}` | Current system username | `corbinator` |
 | `{repo}` | Repository name from work item | `infonexus-api` |
-| `{workitemid}` | Work item ID | `25186` |
+| `{workitemid}` | Work item ID (provider-specific) | `25186` (ADO) or `a1b2c3d4...` (Notion) |
 | `{branch_prefix}` | Branch type prefix | `feature`, `bug`, `refactor` |
+
+### Provider-Specific Work Item IDs
+
+**IMPORTANT**: The `work_item_id` used for worktree creation varies by provider:
+
+| Provider | ID Source | Format | Example |
+|----------|-----------|--------|---------|
+| Azure DevOps | Work item `id` field | Integer | `25186` |
+| **Notion** | **Page `id` from fetch response** | UUID | `a1b2c3d4-e5f6-7890-abcd-ef1234567890` |
+| Jira | Issue `key` field | String | `PROJ-123` |
+
+**Common Mistake with Notion**: Do NOT use `database_id` from config - that's the same for all work items in the database! Always use the page's `id` field from the `mcp__notion__notion-fetch` response.
+
+```markdown
+# Correct: Use page ID from fetch response
+notion_page = mcp__notion__notion-fetch(pageId: user_provided_id)
+work_item_id = notion_page.id  # This is the page UUID, unique per work item
+
+# WRONG: Do not use database_id from config
+work_item_id = config.work_items.providers.notion.database_id  # Same for ALL items!
+```
 
 ## Worktree Creation Algorithm
 

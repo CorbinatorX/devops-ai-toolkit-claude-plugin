@@ -64,6 +64,14 @@ See shared module READMEs for detailed patterns and examples.
 
 ### Step 1: Retrieve Work Item Details
 
+**First, determine the work item provider:**
+
+```bash
+provider=$(jq -r '.work_items.provider // "azure-devops"' .claude/techops-config.json 2>/dev/null || echo "azure-devops")
+```
+
+#### Provider: Azure DevOps (default)
+
 Use `mcp__azure-devops__wit_get_work_item` to fetch user story details.
 
 **Parameters:**
@@ -83,9 +91,40 @@ Use `mcp__azure-devops__wit_get_work_item` to fetch user story details.
 - CreatedDate, ChangedDate
 - Related work items (parent features, child tasks)
 - Custom.TeamsChannelMessageId (for Teams thread reply)
+- **`work_item_id`**: Use the `id` field from response (integer)
 
-**Validation:**
-- If type is NOT "User Story", show error and stop
+#### Provider: Notion
+
+Use `mcp__notion__notion-fetch` to fetch the page.
+
+**Parameters:**
+```json
+{
+  "pageId": "{user_provided_id}"
+}
+```
+
+**CRITICAL - Work Item ID Extraction:**
+```markdown
+# The work_item_id for worktree creation MUST come from the page response:
+work_item_id = notion_page.id  # Page UUID, unique per work item
+
+# DO NOT use database_id from config - it's the same for ALL work items!
+# WRONG: work_item_id = config.work_items.providers.notion.database_id
+```
+
+**Extract (using property_mappings from config):**
+- Title from mapped title property
+- State from mapped state property
+- Type from mapped type property (should map to "feature")
+- Description from mapped description property
+- **`work_item_id`**: Use the page's `id` field from response (UUID)
+
+**Reference**: See `.claude/shared/work-items/providers/notion/README.md` for property mapping patterns.
+
+#### Validation (all providers)
+
+- If type is NOT "User Story" (ADO) or "Feature" (Notion), show error and stop
 - If work item not found, show error
 
 ### Step 2: Display User Story Context
