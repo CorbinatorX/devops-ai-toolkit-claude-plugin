@@ -242,7 +242,11 @@ denormalizeFields(fields: UpdateFields, provider: string) -> ProviderFields:
 
 Example:
 ```bash
-provider=$(jq -r '.work_items.provider // "azure-devops"' .claude/techops-config.json)
+provider=$(jq -r '.work_items.provider // empty' .claude/techops-config.json)
+if [ -z "$provider" ]; then
+    echo "Error: work_items.provider not configured in .claude/techops-config.json"
+    exit 1
+fi
 
 case "$provider" in
   "azure-devops")

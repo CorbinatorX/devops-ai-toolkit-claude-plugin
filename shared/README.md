@@ -34,9 +34,24 @@ Commands and skills read configuration from `.claude/techops-config.json` in eac
     "channel_id": "19:xxxxx@thread.tacv2",
     "webhook_url": "https://{organization}ltd.webhook.office.com/..."
   },
+  "agent_teams": {
+    "enabled": true,
+    "review_pass_threshold": 75,
+    "review_production_threshold": 85,
+    "max_rework_attempts": 2,
+    "max_builder_teammates": 3,
+    "require_plan_approval": true,
+    "human_approval_gates": [],
+    "notifications": {
+      "on_phase_complete": true,
+      "on_blocked": true,
+      "on_orchestration_complete": true
+    },
+    "display_mode": "in-process"
+  },
   "created_at": "2025-12-22T00:00:00Z",
   "created_by": "migration",
-  "plugin_version": "0.1.0"
+  "plugin_version": "0.5.0"
 }
 ```
 
@@ -52,6 +67,15 @@ Commands and skills read configuration from `.claude/techops-config.json` in eac
 | `teams` | `team_id` | Yes* | Microsoft Teams Team ID (GUID) |
 | `teams` | `channel_id` | Yes* | Microsoft Teams Channel ID |
 | `teams` | `webhook_url` | No | Legacy webhook URL (fallback, no message ID) |
+| `agent_teams` | `enabled` | No | Enable Agent Teams orchestration mode (default: `true`) |
+| `agent_teams` | `review_pass_threshold` | No | Minimum review score to pass (default: `75`) |
+| `agent_teams` | `review_production_threshold` | No | Production-ready score threshold (default: `85`) |
+| `agent_teams` | `max_rework_attempts` | No | Max rework loops before human escalation (default: `2`) |
+| `agent_teams` | `max_builder_teammates` | No | Max Builder teammates per phase (default: `3`) |
+| `agent_teams` | `require_plan_approval` | No | Require Architect plan approval (default: `true`) |
+| `agent_teams` | `human_approval_gates` | No | Phase numbers requiring human approval (default: `[]`) |
+| `agent_teams` | `notifications` | No | Notification settings for phase/blocked/complete events |
+| `agent_teams` | `display_mode` | No | `"in-process"` or `"split-pane"` (default: `"in-process"`) |
 | `confluence` | `space_key` | No | Confluence space for post-mortems |
 | `confluence` | `postmortem_parent_page_id` | No | Parent page ID for post-mortems |
 

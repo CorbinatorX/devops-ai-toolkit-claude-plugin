@@ -67,10 +67,14 @@ See shared module READMEs for detailed patterns and examples.
 **First, determine the work item provider:**
 
 ```bash
-provider=$(jq -r '.work_items.provider // "azure-devops"' .claude/techops-config.json 2>/dev/null || echo "azure-devops")
+provider=$(jq -r '.work_items.provider // empty' .claude/techops-config.json 2>/dev/null)
+if [ -z "$provider" ]; then
+    echo "Error: No work item provider configured. Set work_items.provider in .claude/techops-config.json"
+    exit 1
+fi
 ```
 
-#### Provider: Azure DevOps (default)
+#### Provider: Azure DevOps
 
 Use `mcp__azure-devops__wit_get_work_item` to fetch bug details.
 

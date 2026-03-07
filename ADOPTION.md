@@ -5,10 +5,11 @@ Complete guide for installing and using the Agentic Toolkit plugin across your t
 ## Overview
 
 The Agentic Toolkit is a reusable Claude Code plugin that provides:
-- **5 Skills** with auto-discovery (blueprint, pickup-bug, pickup-feature, implement-task, review-task)
-- **13 Slash Commands** for work items, documentation, and operations
-- **6 Specialized Agents** for workflow and operations support
-- **Shared Modules** for Azure DevOps, Git, Teams, and Confluence patterns
+- **6 Skills** with auto-discovery (orchestrate, blueprint, pickup-bug, pickup-feature, implement-task, review-task)
+- **14 Slash Commands** for work items, documentation, workflow, and operations
+- **7 Specialized Agents** for workflow and operations support (including Tech Lead orchestrator)
+- **Agent Teams Mode** for autonomous multi-phase feature delivery
+- **Shared Modules** for Azure DevOps, Git, Teams, Confluence, and Orchestration patterns
 
 ## Prerequisites
 
@@ -324,6 +325,11 @@ Generate conventional commit message.
 ```
 Create pull request with description.
 
+```bash
+/resume-orchestration
+```
+Resume an interrupted Agent Teams orchestration from its last checkpoint.
+
 ### Operations
 
 ```bash
@@ -350,20 +356,25 @@ Agents can be invoked by Skills or trigger automatically from conversation conte
 
 ### Workflow Agents
 
+**tech-lead**
+- **Triggers**: "orchestrate", "deliver feature", "build the whole thing"
+- **Expertise**: Agent Teams orchestration, multi-phase coordination, quality gates
+- **Used by**: orchestrate Skill
+
 **software-architect**
 - **Triggers**: "design", "architecture", "blueprint"
 - **Expertise**: Clean Architecture, DDD, domain modeling, tech stack selection
-- **Used by**: blueprint Skill
+- **Used by**: blueprint Skill, Tech Lead (as teammate)
 
 **builder**
 - **Triggers**: "implement task", "build task"
 - **Expertise**: Focused implementation with strict scope discipline
-- **Used by**: pickup-bug, pickup-feature, implement-task Skills
+- **Used by**: pickup-bug, pickup-feature, implement-task Skills, Tech Lead (as teammate)
 
 **manager**
 - **Triggers**: "review task", "validate task", "quality check"
 - **Expertise**: Quality validation, automated checks, scoring, tech debt tracking
-- **Used by**: review-task Skill
+- **Used by**: review-task Skill, Tech Lead (as teammate)
 
 ### Operations Agents
 
@@ -382,7 +393,43 @@ Agents can be invoked by Skills or trigger automatically from conversation conte
 - **Expertise**: YARP timeout analysis, connection pooling, middleware pipeline
 - **Used by**: /yarp-timeout-playbook command
 
+### orchestrate Skill
+
+**Trigger phrases**: "orchestrate", "deliver feature", "build the whole thing", "end to end"
+
+**Example**:
+```
+"Orchestrate the full build of a payment service"
+"Deliver work item #25186 end to end"
+```
+
+**What it does**:
+1. Spawns **Tech Lead** agent as Agent Teams team lead
+2. **Architect** teammate designs blueprint (with plan approval)
+3. **Builder** teammates implement tasks per phase (parallel, with file ownership)
+4. **Reviewer** teammate validates quality (6-category scoring)
+5. Failed reviews trigger rework (max 2 attempts)
+6. Creates commit + PR per phase
+7. Persists state for crash recovery (`/resume-orchestration`)
+
+**Requires**: `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` environment variable. Falls back to sequential workflow if not set.
+
+**Full guide**: See `AGENT-TEAMS-GUIDE.md` for detailed usage, configuration, and examples.
+
 ## Common Workflows
+
+### Autonomous Feature Delivery (Agent Teams)
+
+1. **Enable Agent Teams**: `export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`
+
+2. **Start orchestration**: "Orchestrate the full build of a payment service"
+   - Tech Lead coordinates everything autonomously
+
+3. **Monitor progress**: Watch teammate status or use agent-deck TUI
+
+4. **Review PRs**: One PR per phase, with review scores
+
+5. **Resume if interrupted**: `/resume-orchestration payment-service`
 
 ### Bug Fix Workflow
 
@@ -608,6 +655,6 @@ After installation:
 
 ## Version
 
-- **Plugin Version**: 0.1.0
-- **Last Updated**: 2025-12-19
+- **Plugin Version**: 0.5.0
+- **Last Updated**: 2026-03-07
 - **Maintained By**: TechOps Team

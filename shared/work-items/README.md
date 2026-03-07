@@ -57,17 +57,18 @@ Work item provider settings in `.claude/techops-config.json`:
 }
 ```
 
-### Backward Compatibility
+### Provider Required
 
-If `work_items.provider` is not set, the system defaults to `azure-devops` and uses the existing `azure_devops` configuration section for backward compatibility:
+The `work_items.provider` field is **required** in `.claude/techops-config.json`. If not set, skills will error and prompt you to configure it:
 
 ```bash
-# Check provider selection
-provider=$(jq -r '.work_items.provider // "azure-devops"' .claude/techops-config.json)
+# Check provider selection — no default, must be explicitly configured
+provider=$(jq -r '.work_items.provider // empty' .claude/techops-config.json)
 
-if [ "$provider" = "azure-devops" ]; then
-    # Use existing azure_devops config for backward compatibility
-    PROJECT=$(jq -r '.azure_devops.project // .work_items.providers["azure-devops"].project' .claude/techops-config.json)
+if [ -z "$provider" ]; then
+    echo "Error: No work item provider configured."
+    echo "Set work_items.provider in .claude/techops-config.json to one of: notion, azure-devops, jira"
+    exit 1
 fi
 ```
 
@@ -81,11 +82,16 @@ get_work_item_provider() {
     local config_file=".claude/techops-config.json"
 
     if [ ! -f "$config_file" ]; then
-        echo "azure-devops"  # Default
-        return
+        echo "Error: .claude/techops-config.json not found. Run /configure to set up." >&2
+        return 1
     fi
 
-    local provider=$(jq -r '.work_items.provider // "azure-devops"' "$config_file")
+    local provider=$(jq -r '.work_items.provider // empty' "$config_file")
+    if [ -z "$provider" ]; then
+        echo "Error: work_items.provider not set in $config_file. Set to: notion, azure-devops, or jira" >&2
+        return 1
+    fi
+
     echo "$provider"
 }
 
@@ -368,7 +374,7 @@ Detailed provider-specific documentation:
 
 ## Notes
 
-- Default provider is "azure-devops" for backward compatibility
+- Provider must be explicitly configured — no default assumed
 - Provider selection is per-project (in techops-config.json)
 - Field mappings handle format differences (HTML vs Markdown)
 - State transitions vary by provider - check provider docs
