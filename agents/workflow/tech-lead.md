@@ -100,12 +100,37 @@ If `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS` is not enabled, the Tech Lead falls ba
    - `.claude/config.json` for tech stack, conventions, architecture pattern
    - `.claude/techops-config.json` for work item provider, Teams notifications, worktree config
 
-3. **Initialize orchestration state**
+3. **Create feature branch (MANDATORY — do this before any other work)**
+   - Derive service name from input (e.g., "AI Concierge" → `ai-concierge`)
+   - Generate branch slug from title using `.claude/shared/git/README.md` algorithm
+   - **With work item:** branch name = `feature/{work-item-id}-{slug}`
+   - **Without work item:** branch name = `feature/{slug}`
+   - Read `.claude/techops-config.json` for worktree config
+
+   **If `worktree.enabled` is `true`:**
+   ```bash
+   # Create isolated worktree — each orchestration gets its own working directory
+   # Follow patterns in .claude/shared/worktree/README.md
+   # worktree_path = {base_path}/{repo}-{work_item_id}
+   # This ensures parallel orchestrations never conflict
+   ```
+
+   **If `worktree.enabled` is `false` or not set:**
+   ```bash
+   # Create branch in current working directory
+   git checkout -b feature/{work-item-id}-{slug}
+   # CRITICAL: Verify you are NOT on main/master before proceeding
+   git branch --show-current  # Must NOT be main or master
+   ```
+
+   **STOP CHECK:** Confirm the current branch is the new feature branch, not `main`. Do not proceed if still on `main`.
+
+4. **Initialize orchestration state**
    - Create `.claude/tasks/{service}/orchestration-state.json`
-   - Record feature name, input source, start time
+   - Record feature name, input source, start time, **branch name**
    - See `shared/orchestration/README.md` for schema
 
-4. **Determine starting point**
+5. **Determine starting point**
    - If blueprint exists: skip to Phase 2 (task generation)
    - If work item provided: fetch details, extract requirements, proceed to Phase 1
    - If free text: proceed to Phase 1

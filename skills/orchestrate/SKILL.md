@@ -155,15 +155,48 @@ Run /configure to set up project configuration first.
 1. Derive service name from description
 2. Use description as feature requirements
 
-### Step 4: Set Up Git Branch
+### Step 4: Create Feature Branch (MANDATORY)
 
-Generate branch name using shared git patterns:
-- **With work item:** `feature/{work-item-id}-{slug}`
-- **Without work item:** `feature/{slug}`
+**CRITICAL: This step MUST complete before ANY other work begins. Never work on main.**
 
-**Check for worktree mode** in `.claude/techops-config.json`:
-- If `worktree.enabled` is `true` and a repository field is available from the work item, create an isolated worktree using patterns from `.claude/shared/worktree/README.md`
-- Otherwise, create branch in current working directory
+1. **Derive service name** from the feature title or work item
+   - e.g., "AI Concierge: Event Discovery" → `ai-concierge`
+
+2. **Generate branch name** using shared git patterns (`.claude/shared/git/README.md`):
+   - **With work item:** `feature/{work-item-id}-{slug}`
+   - **Without work item:** `feature/{slug}`
+
+3. **Check for worktree mode** in `.claude/techops-config.json`:
+
+   **If `worktree.enabled` is `true`:**
+   ```bash
+   # Each orchestration gets its own isolated worktree
+   # This is ESSENTIAL for running parallel orchestrations
+   worktree_enabled=$(jq -r '.worktree.enabled // false' .claude/techops-config.json)
+
+   if [ "$worktree_enabled" = "true" ]; then
+       # Follow .claude/shared/worktree/README.md patterns
+       # Creates: {base_path}/{repo}-{work_item_id}/
+       # Each agent-deck session works in its own directory
+       # Prevents branch conflicts between parallel orchestrations
+   fi
+   ```
+
+   **If worktree mode disabled:**
+   ```bash
+   # Create branch in current directory
+   git checkout -b feature/{work-item-id}-{slug}
+   ```
+
+4. **Verify branch** — STOP if still on main:
+   ```bash
+   current_branch=$(git branch --show-current)
+   if [ "$current_branch" = "main" ] || [ "$current_branch" = "master" ]; then
+       echo "FATAL: Still on $current_branch. Branch creation failed. Do not proceed."
+       exit 1
+   fi
+   echo "Working on branch: $current_branch"
+   ```
 
 **Reference:** See `.claude/shared/git/README.md` for branch slug generation and `.claude/shared/worktree/README.md` for worktree patterns.
 
