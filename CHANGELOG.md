@@ -114,7 +114,7 @@ claude-code plugin install CorbinatorX/devops-ai-toolkit-claude-plugin
 
 ---
 
-## [0.2.0] - 2026-03-XX
+## [0.5.0] - 2026-03-07
 
 ### Added
 
