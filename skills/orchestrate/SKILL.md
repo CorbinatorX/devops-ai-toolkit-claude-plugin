@@ -225,8 +225,8 @@ Present the orchestration plan to the user before starting:
 4. Repeat until all phases delivered
 
 ### Agent Teams Configuration
-- Team lead: Tech Lead agent
-- Teammates: Architect, Builder(s), Reviewer
+- Team lead: THIS session (you — the main Claude Code session)
+- Teammates: Architect, Builder(s), Reviewer (spawned by you)
 - Strategy: Fresh team per phase
 - Quality threshold: 75/100 (Grade B)
 
@@ -235,57 +235,118 @@ Proceed with orchestration?
 
 Wait for user confirmation before starting.
 
-### Step 7: Delegate to Tech Lead Agent
+### Step 7: Act as Team Lead (CRITICAL — do NOT delegate)
 
-Invoke the **tech-lead** agent as the Agent Teams team lead:
+**CRITICAL: YOU (the main session) are the team lead. Do NOT delegate to a subagent or invoke the tech-lead agent via the Agent tool. Subagents CANNOT create teams or spawn teammates — only the top-level session can.**
 
-```markdown
-You are the Tech Lead orchestrator. Manage autonomous multi-phase delivery.
+You must directly:
+1. Create an agent team
+2. Spawn teammates
+3. Coordinate via the shared task list and messaging
+4. Clean up the team between phases
 
-Feature: {service-name}
-Input: {input source details}
-Config: .claude/config.json
-State file: .claude/tasks/{service-name}/orchestration-state.json
-Branch: {branch-name}
+Follow the workflow from `agents/workflow/tech-lead.md` as YOUR instructions — do not spawn it as a separate agent.
 
-{If blueprint exists: "Blueprint already exists at {path}. Skip architecture phase."}
-{If work item: "Work item details: {title}, {description}, {acceptance criteria}"}
-{If free-text: "Feature description: {description}"}
+#### 7a. Architecture Phase — Spawn Architect Teammate
 
-Follow the tech-lead agent definition for the full orchestration workflow.
-Persist state after every significant event.
+Create a team and spawn an Architect teammate:
+
+```
+Create an agent team for {service-name} development.
+
+Spawn an architect teammate with this prompt:
+"You are a Software Architect. Design architecture for: {feature_description}
+
+Create a comprehensive blueprint at .claude/blueprints/{service-name}-blueprint.md.
+Follow project conventions from .claude/config.json.
+Reference the software-architect agent definition for blueprint structure requirements.
+
+Include:
+- Domain model with entities and relationships
+- Technical architecture following {configured_pattern}
+- API design with endpoints and data models
+- 4-6 implementation phases with 5-10 tasks each
+- Security, performance, and testing considerations"
+
+Require plan approval before the architect makes changes.
+Only approve plans that include test strategy and security considerations.
 ```
 
-The Tech Lead agent takes over from here and manages:
-- Architect teammate spawning with plan approval
-- Blueprint-to-tasks conversion
-- Builder teammate spawning per phase with file ownership
-- Reviewer teammate spawning for quality gates
-- Rework loops (max 2 attempts)
-- Commit and PR creation per phase
-- Team cleanup between phases
+Wait for the Architect to complete. Validate the blueprint exists and has all required sections.
 
-### Step 8: Monitor Progress (User-Facing)
+**If blueprint already exists:** Skip this step — go directly to 7b.
 
-While the Tech Lead orchestrates, provide progress updates at milestones:
+#### 7b. Task Generation
 
-```markdown
-## Orchestration Progress: {service-name}
+Run `/blueprint-tasks` with the blueprint path to generate phase task files.
+Parse the generated files to determine total phases and task structure.
+Update orchestration state.
 
-### Architecture
-- [x] Architect plan approved
-- [x] Blueprint created: .claude/blueprints/{name}-blueprint.md
-- [x] Phase tasks generated: {N} phases
+#### 7c. Implementation Phases — For Each Phase
 
-### Phase 1: {title}
-- [x] Builder(s) spawned: {count} teammates
-- [x] Tasks completed: {X}/{Y}
-- [x] Review score: {score}/100 (Grade {grade})
-- [x] PR created: #{pr-number}
+**Clean up any previous team, then create a fresh team for this phase:**
 
-### Phase 2: {title}
-- [ ] In progress...
 ```
+Clean up the team.
+Create a new agent team for {service-name} phase {N}.
+```
+
+**Analyze task independence and assign file ownership:**
+- Read the phase file tasks and their file locations
+- Group tasks by file ownership — no two teammates edit the same files
+- Determine teammate count (1-3 builders based on independent task groups)
+
+**Spawn Builder teammate(s):**
+
+```
+Spawn a builder teammate with this prompt:
+"You are a Builder. Implement tasks from the shared task list.
+
+Blueprint: .claude/blueprints/{service-name}-blueprint.md
+Phase file: .claude/tasks/{service-name}/phase{N}.md
+Your file ownership: {list of files this teammate may edit}
+
+Follow the builder agent definition for implementation workflow.
+Self-claim tasks from the shared list as you complete work.
+Only edit files in your ownership set.
+Run build and tests after each task."
+```
+
+**Create tasks in the shared task list** from the phase file with dependencies.
+
+**Wait for all builders to finish** — you'll receive idle notifications.
+
+**Spawn Reviewer teammate:**
+
+```
+Spawn a reviewer teammate with this prompt:
+"You are a Reviewer running the Manager agent's scoring workflow.
+
+Phase file: .claude/tasks/{service-name}/phase{N}.md
+Blueprint: .claude/blueprints/{service-name}-blueprint.md
+
+Run the full Manager review process:
+1. Execute automated checks (build, tests, linting, type checking)
+2. Validate acceptance criteria from the phase file
+3. Score across 6 categories (Completeness, Code Quality, Architecture, Security, Testing, Documentation)
+4. Generate status report at .claude/tasks/{service-name}/phase{N}_status.md
+5. Report your total score and letter grade"
+```
+
+**Evaluate review results:**
+- Score >= 75 (Grade B+): Phase passes — proceed to commit and PR
+- Score < 75: Trigger rework — message Builder teammates with specific fixes
+- Max 2 rework attempts — then escalate to human
+
+**On pass:** Run `/commit` and `/create-pr` for the phase.
+
+**Clean up the team** before starting the next phase.
+
+**Repeat for each phase until all phases are delivered.**
+
+### Step 8: Monitor Progress
+
+Track and report progress at each milestone:
 
 ### Step 9: Handle Completion
 
@@ -434,11 +495,11 @@ The Skill tracks which step the user is on and suggests the next command after e
 
 ## Integration with Workflow
 
-**Delegates to agents:**
-- **tech-lead** agent — Full orchestration as team lead
-- **software-architect** agent — Blueprint creation (via Tech Lead)
-- **builder** agent — Task implementation (via Tech Lead)
-- **manager** agent — Quality validation (via Tech Lead)
+**Main session acts as team lead using:**
+- **tech-lead** agent definition — Instructions for how to orchestrate (followed directly, NOT spawned as subagent)
+- **software-architect** agent — Blueprint creation (spawned as Agent Teams teammate)
+- **builder** agent — Task implementation (spawned as Agent Teams teammate)
+- **manager** agent — Quality validation (spawned as Agent Teams teammate)
 
 **Uses commands:**
 - `/blueprint-tasks` — Convert blueprint to phase tasks
