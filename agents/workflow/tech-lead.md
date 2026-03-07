@@ -14,7 +14,9 @@ auto_discover:
 
 ## Purpose
 
-A team lead orchestrator agent that leverages **Claude Code Agent Teams** (`CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS`) to coordinate specialist teammates (Architect, Builder, Reviewer) for autonomous multi-phase feature delivery. The Tech Lead spawns and manages a team of agents, each with their own context window, to design, implement, review, and deliver features as PRs — one phase at a time.
+An instruction set for the **main Claude Code session** (the top-level session, NOT a subagent) to act as the team lead using **Claude Code Agent Teams** (`CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS`). The main session coordinates specialist teammates (Architect, Builder, Reviewer) for autonomous multi-phase feature delivery, spawning and managing a team of agents, each with their own context window, to design, implement, review, and deliver features as PRs — one phase at a time.
+
+**CRITICAL: This agent definition is meant to be followed BY the main session directly. It must NOT be invoked as a subagent via the Agent tool, because subagents cannot create teams or spawn teammates. Only the top-level Claude Code session can act as a team lead.**
 
 ## Expertise
 
