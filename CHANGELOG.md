@@ -114,6 +114,32 @@ claude-code plugin install CorbinatorX/devops-ai-toolkit-claude-plugin
 
 ---
 
+## [0.2.0] - 2026-03-XX
+
+### Added
+
+#### Agent Teams Orchestration
+
+- **tech-lead** agent — Team lead orchestrator using Claude Code Agent Teams for autonomous multi-phase feature delivery
+- **orchestrate** skill — Auto-discovers on "orchestrate", "deliver feature", "build the whole thing"; launches Tech Lead
+- `/resume-orchestration` command — Resume interrupted orchestration from last checkpoint
+- **Orchestration shared module** (`shared/orchestration/`) — State schema, transition rules, hooks, resume algorithm
+
+#### Orchestration Features
+
+- **Team-per-phase strategy** — Fresh Agent Teams team per phase, avoids context bloat
+- **Plan approval gates** — Architect must get plan approved before writing blueprint
+- **Parallel Builder teammates** — Up to 3 builders with file ownership assignments and shared task self-claiming
+- **Quality hooks** — TaskCompleted (build+test validation) and TeammateIdle (acceptance criteria checking)
+- **Review loop with rework** — Max 2 rework attempts before escalating to human
+- **Orchestration state persistence** — JSON state file at `.claude/tasks/{service}/orchestration-state.json`
+- **Continuation prompts** — Structured resume prompts for seamless crash recovery
+- **Configurable thresholds** — Review scores, max rework attempts, max teammates, human approval gates
+- **Work item status updates** — Milestone-based updates to ADO/Notion/Jira work items
+- **Teams notifications** — Phase completion, blocked, and orchestration complete alerts
+- **Sequential fallback** — Graceful degradation to manual workflow when Agent Teams is disabled
+- **agent-deck integration** — Conductor mode for monitoring, Slack/Telegram for remote runs
+
 ## [Unreleased]
 
 ### Planned Features

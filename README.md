@@ -78,6 +78,7 @@ See [`.claude/README.md`](.claude/README.md) for detailed configuration guide.
 - `/create-feature-request` - Create feature request work items
 
 ### Workflow Skills
+- **orchestrate** - Autonomous multi-phase feature delivery using Claude Code Agent Teams with Tech Lead orchestrator
 - **blueprint** - Architecture blueprint creation for new services/features
 - **pickup-bug** - Bug pickup workflow with Azure DevOps integration
 - **pickup-feature** - Feature pickup workflow for User Stories
@@ -98,12 +99,17 @@ See [`.claude/README.md`](.claude/README.md) for detailed configuration guide.
 - `/blueprint-tasks` - Convert blueprints to task files
 - `/commit` - Smart commit with conventional commit messages
 - `/create-pr` - Create pull requests with auto-generated descriptions
+- `/resume-orchestration` - Resume interrupted Tech Lead orchestration from checkpoint
 
 ## Skills Auto-Discovery
 
 Skills automatically trigger based on natural language:
 
 ```bash
+# Orchestrate (full autonomous delivery)
+"Orchestrate the full build of the payment service"
+"Deliver the notification system end to end"
+
 # Blueprint
 "I want to design a new payment service"
 
@@ -155,13 +161,48 @@ The plugin includes comprehensive documentation for common patterns:
 - **Git** (`shared/git/`) - Branch slug generation, conventional commits
 - **Teams** (`shared/teams/`) - MessageCard templates, notification patterns
 - **Confluence** (`shared/confluence/`) - Post-mortem templates, SLA calculation
+- **Orchestration** (`shared/orchestration/`) - State management, hooks, and resume patterns for Agent Teams
+- **Work Items** (`shared/work-items/`) - Provider-agnostic work item interface (ADO, Notion, Jira)
+- **Worktree** (`shared/worktree/`) - Git worktree patterns for isolated development
 
 See individual module READMEs in `shared/` for detailed usage patterns.
+
+## Agent Teams Integration
+
+The plugin supports **Claude Code Agent Teams** (`CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS`) for autonomous multi-phase feature delivery:
+
+```bash
+# Enable Agent Teams
+export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
+
+# Orchestrate a feature
+"Orchestrate the full build of the payment service"
+```
+
+**How it works:**
+1. A **Tech Lead** agent acts as team lead, spawning specialist teammates
+2. **Architect** teammate designs the blueprint (with plan approval)
+3. **Builder** teammates implement tasks in parallel (with file ownership)
+4. **Reviewer** teammate validates quality (6-category scoring)
+5. Failed reviews trigger rework loops (max 2 attempts)
+6. Each phase produces a commit and PR
+7. State is persisted for crash recovery (`/resume-orchestration`)
+
+**Without Agent Teams**, the `orchestrate` skill falls back to guiding you through the sequential workflow manually.
+
+See `agents/workflow/tech-lead.md` and `skills/orchestrate/SKILL.md` for details.
 
 ## Agents
 
 The plugin includes specialized agents for auto-discovery:
 
+**Workflow Agents:**
+- **tech-lead** - Team lead orchestrator using Claude Code Agent Teams for autonomous multi-phase delivery
+- **software-architect** - Architecture blueprint creation and domain modeling
+- **builder** - Focused task implementation with strict scope discipline
+- **manager** - Quality assurance with automated checks and scoring
+
+**Operations Agents:**
 - **ops-triager** - Incident triage and log analysis
 - **azure-edge-specialist** - Azure Front Door, WAF, and edge networking issues
 - **dotnet-performance-analyst** - .NET application performance and YARP debugging
