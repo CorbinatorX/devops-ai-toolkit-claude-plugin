@@ -140,6 +140,14 @@ claude-code plugin install CorbinatorX/devops-ai-toolkit-claude-plugin
 - **Sequential fallback** — Graceful degradation to manual workflow when Agent Teams is disabled
 - **agent-deck integration** — Conductor mode for monitoring, Slack/Telegram for remote runs
 
+## [0.5.1] - 2026-03-08
+
+### Fixed
+
+- **Main session must be team lead** — Subagents cannot create Agent Teams or spawn teammates; orchestrate skill now instructs the main session to act as team lead directly instead of delegating to a subagent
+- **Branch creation enforcement** — Orchestration requires feature branch creation before any work begins, with mandatory stop check
+- **Provider config required** — Pickup skills no longer silently default to Azure DevOps; provider must be explicitly configured in `techops-config.json`
+
 ## [Unreleased]
 
 ### Planned Features
