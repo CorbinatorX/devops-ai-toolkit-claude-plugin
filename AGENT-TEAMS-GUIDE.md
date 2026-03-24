@@ -71,7 +71,7 @@ Add an `agent_teams` section to your `.claude/techops-config.json`:
 "Deliver work item #25186 end to end"
 
 # Or from an existing blueprint
-"Orchestrate from .claude/blueprints/payment-service-blueprint.md"
+"Orchestrate from .agentic/blueprints/active/payment-service-blueprint.md"
 ```
 
 ## Configuration Reference
@@ -171,7 +171,7 @@ The Tech Lead creates a **fresh team for each phase**:
 
 1. **Why?** Each teammate gets a clean context window — no bloat from previous phases
 2. **How?** After a phase's PR is created, all teammates are shut down. A new team is spawned for the next phase
-3. **State?** Progress is persisted to `.claude/tasks/{service}/orchestration-state.json` — survives team cleanup
+3. **State?** Progress is persisted to `.agentic/tasks/active/{service}/orchestration-state.json` — survives team cleanup
 
 ### Shared Task List
 
@@ -230,7 +230,7 @@ Requirements pulled from the work item.
 
 **3. Existing blueprint:**
 ```
-"Orchestrate from .claude/blueprints/notification-service-blueprint.md"
+"Orchestrate from .agentic/blueprints/active/notification-service-blueprint.md"
 ```
 Skips architecture phase — goes straight to task generation.
 
@@ -311,7 +311,7 @@ When a review scores below the pass threshold (default 75):
 
 All progress is persisted to:
 ```
-.claude/tasks/{service-name}/orchestration-state.json
+.agentic/tasks/active/{service-name}/orchestration-state.json
 ```
 
 This file tracks:
@@ -434,7 +434,7 @@ Proceed with orchestration? yes
 
 [Tech Lead spawns Architect...]
 [Architect plan approved]
-[Blueprint created: .claude/blueprints/notification-service-blueprint.md]
+[Blueprint created: .agentic/blueprints/active/notification-service-blueprint.md]
 [4 phases generated]
 [Phase 1: 2 builders spawned, 8 tasks...]
 [Phase 1: Review score 91/100 (A), PR #43 created]
@@ -455,7 +455,7 @@ Proceed with orchestration? yes
 
 Resuming Orchestration: notification-service
 
-Blueprint: .claude/blueprints/notification-service-blueprint.md
+Blueprint: .agentic/blueprints/active/notification-service-blueprint.md
 Branch: feature/notification-service
 Progress: Phase 3/4
 Status: in_progress
@@ -488,14 +488,14 @@ export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
 ### State file corrupted
 ```bash
 # View the state
-cat .claude/tasks/{service}/orchestration-state.json | jq .
+cat .agentic/tasks/active/{service}/orchestration-state.json | jq .
 
 # Delete and start fresh if needed
-rm .claude/tasks/{service}/orchestration-state.json
+rm .agentic/tasks/active/{service}/orchestration-state.json
 ```
 
 ### Review keeps failing
-- Check the status report: `.claude/tasks/{service}/phase{N}_status.md`
+- Check the status report: `.agentic/tasks/active/{service}/phase{N}_status.md`
 - Lower `review_pass_threshold` if appropriate for your project
 - Increase `max_rework_attempts` (default 2)
 - Or fix the issues manually and resume

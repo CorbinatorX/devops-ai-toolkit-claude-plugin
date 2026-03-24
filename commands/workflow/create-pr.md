@@ -109,10 +109,10 @@ bugfix/auth-token-validation → (no blueprint)
 
 **2. Commit messages:**
 - Task references: `#2.1`, `phase1#2.1`, `task 2.1`
-- Blueprint files: `.claude/blueprints/payment-service-blueprint.md`
+- Blueprint files: `.agentic/blueprints/active/payment-service-blueprint.md`
 
 **3. Changed files:**
-- `.claude/tasks/{service}/{phase}.md` → Task file updated
+- `.agentic/tasks/active/{service}/{phase}.md` → Task file updated
 - Check task file for checkbox completion
 
 #### Categorize File Changes
@@ -293,7 +293,7 @@ Group by file categories:
 ```markdown
 ## Blueprint/Task Reference
 
-- Blueprint: `.claude/blueprints/payment-service-blueprint.md`
+- Blueprint: `.agentic/blueprints/active/payment-service-blueprint.md`
 - Tasks Completed:
   - ✅ `payment-service/phase1#1.1` - Project setup
   - ✅ `payment-service/phase1#2.1` - Payment entity

@@ -15,7 +15,7 @@ Resume a Tech Lead orchestration from its last checkpoint, using the persisted o
 /resume-orchestration notification-system
 ```
 
-**If no service name provided:** scan `.claude/tasks/` for directories containing `orchestration-state.json` and list available orchestrations to resume.
+**If no service name provided:** scan `.agentic/tasks/active/` for directories containing `orchestration-state.json` and list available orchestrations to resume.
 
 ## Step-by-Step Process
 
@@ -23,10 +23,10 @@ Resume a Tech Lead orchestration from its last checkpoint, using the persisted o
 
 ```bash
 # If service name provided
-STATE_FILE=".claude/tasks/{service-name}/orchestration-state.json"
+STATE_FILE=".agentic/tasks/active/{service-name}/orchestration-state.json"
 
 # If no service name, scan for available orchestrations
-find .claude/tasks -name "orchestration-state.json" -type f
+find .agentic/tasks/active -name "orchestration-state.json" -type f
 ```
 
 **If no state file found:**
@@ -55,7 +55,7 @@ Read the state file and validate:
 
 ```bash
 # Read JSON
-state=$(cat .claude/tasks/{service-name}/orchestration-state.json)
+state=$(cat .agentic/tasks/active/{service-name}/orchestration-state.json)
 ```
 
 **Validation checks:**
@@ -70,7 +70,7 @@ state=$(cat .claude/tasks/{service-name}/orchestration-state.json)
 ```
 Orchestration state file is invalid.
 
-Path: .claude/tasks/{service-name}/orchestration-state.json
+Path: .agentic/tasks/active/{service-name}/orchestration-state.json
 Error: {specific validation error}
 
 Options:
@@ -88,7 +88,7 @@ Phases delivered: {N}
 PRs created: {list of PR URLs}
 
 Nothing to resume. To re-run, delete the state file:
-  rm .claude/tasks/{service-name}/orchestration-state.json
+  rm .agentic/tasks/active/{service-name}/orchestration-state.json
 ```
 
 **If status is `"failed"`:**
@@ -108,7 +108,7 @@ Orchestration for {feature} is blocked waiting for human intervention.
 
 Phase {N} failed review after 2 rework attempts.
 Latest score: {score}/100 (Grade {grade})
-Status report: .claude/tasks/{service-name}/phase{N}_status.md
+Status report: .agentic/tasks/active/{service-name}/phase{N}_status.md
 
 Review the status report and decide:
 1. Manually fix the issues, then update phase status to "in_progress" and resume
@@ -166,7 +166,7 @@ echo $CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS
 test -f {blueprint_path}
 
 # Check phase files exist
-ls .claude/tasks/{service-name}/phase*.md
+ls .agentic/tasks/active/{service-name}/phase*.md
 
 # Check branch exists
 git rev-parse --verify {branch_name}
@@ -213,7 +213,7 @@ Hand off to the Tech Lead agent with resume context:
 ```markdown
 Resume the Tech Lead orchestration for {feature}.
 
-State file: .claude/tasks/{service-name}/orchestration-state.json
+State file: .agentic/tasks/active/{service-name}/orchestration-state.json
 Blueprint: {blueprint_path}
 Branch: {branch_name}
 Current phase: {current_phase}/{total_phases}
@@ -234,10 +234,10 @@ The Tech Lead agent reads the state file and continues from the exact checkpoint
 ```
 No orchestration state found for "{service-name}".
 
-Searched: .claude/tasks/{service-name}/orchestration-state.json
+Searched: .agentic/tasks/active/{service-name}/orchestration-state.json
 
 Available orchestrations:
-{list from scanning .claude/tasks/*/orchestration-state.json}
+{list from scanning .agentic/tasks/active/*/orchestration-state.json}
 
 If none exist, start a new orchestration using the Tech Lead agent.
 ```
@@ -260,7 +260,7 @@ Options:
 ```
 Phase task files not found for {service-name}.
 
-Expected: .claude/tasks/{service-name}/phase{N}.md
+Expected: .agentic/tasks/active/{service-name}/phase{N}.md
 
 Options:
 1. Re-generate from blueprint: /blueprint-tasks {blueprint_path}

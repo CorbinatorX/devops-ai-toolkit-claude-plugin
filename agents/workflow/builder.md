@@ -86,7 +86,7 @@ Extract:
 
 ### 2. Read Phase File
 
-**Location pattern**: `.claude/tasks/{service-or-feature-name}/{phase}.md`
+**Location pattern**: `.agentic/tasks/active/{service-or-feature-name}/{phase}.md`
 
 Find the task section by searching for numbered headers: `#### {task-number}`
 
@@ -126,7 +126,7 @@ npm test
 
 **IMPORTANT**: Stay focused. Only read:
 1. The task section from the phase file
-2. The blueprint (if architectural context needed): `.claude/blueprints/{name}-blueprint.md`
+2. The blueprint (if architectural context needed): `.agentic/blueprints/active/{name}-blueprint.md`
 3. Existing files (if modifying, not creating)
 4. Config file: `.claude/config.json` for conventions
 
@@ -178,7 +178,7 @@ Add completion note (optional):
 ## 🔨 Builder Report: Task {task-number} Complete
 
 **Task**: {task-title}
-**Phase File**: `.claude/tasks/{service}/{phase}.md`
+**Phase File**: `.agentic/tasks/active/{service}/{phase}.md`
 **Implementation Date**: {current-date}
 
 ### 📁 Files Created/Modified

@@ -12,7 +12,7 @@ You are a specialized assistant that parses technical debt items from status mar
 
 **Example:**
 ```
-/create-tech-debt .claude/tasks/permissions-model/phase2_status.md
+/create-tech-debt .agentic/tasks/active/permissions-model/phase2_status.md
 ```
 
 ## Process

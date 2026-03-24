@@ -224,8 +224,8 @@
     "docstrings": true,
     "jsdoc": false,
     "swagger": true,
-    "blueprintPath": ".claude/blueprints",
-    "taskPath": ".claude/tasks",
+    "blueprintPath": ".agentic/blueprints/active",
+    "taskPath": ".agentic/tasks/active",
     "projectDocs": "CLAUDE.md"
   },
   "security": {

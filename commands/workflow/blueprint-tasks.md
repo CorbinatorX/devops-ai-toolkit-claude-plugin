@@ -38,7 +38,7 @@ Study their structure and quality to match the expected format.
 
 ### 3. Generate Task Files
 
-For each phase in the blueprint, create: `.claude/tasks/{service-or-feature-name}/phase{N}.md`
+For each phase in the blueprint, create: `.agentic/tasks/active/{service-or-feature-name}/phase{N}.md`
 
 Each task file MUST include:
 
@@ -257,7 +257,7 @@ Once Phase {N} is complete, proceed to:
 Ensure directory exists before writing files:
 
 ```bash
-mkdir -p .claude/tasks/{service-or-feature-name}
+mkdir -p .agentic/tasks/active/{service-or-feature-name}
 ```
 
 ### 5. Generate Summary Report
@@ -267,16 +267,16 @@ After creating all phase files, provide:
 ```markdown
 ## Blueprint-to-Tasks Conversion Summary
 
-**Blueprint:** `.claude/blueprints/{blueprint-filename}.md`
+**Blueprint:** `.agentic/blueprints/active/{blueprint-filename}.md`
 **Service/Feature:** {Name}
 **Phases Generated:** {count}
 **Tech Stack:** {from config}
 **Estimated Duration:** {weeks} weeks
 
 ### Generated Files:
-1. `.claude/tasks/{name}/phase1.md` - {Title} (~{lines} lines)
-2. `.claude/tasks/{name}/phase2.md` - {Title} (~{lines} lines)
-3. `.claude/tasks/{name}/phase3.md` - {Title} (~{lines} lines)
+1. `.agentic/tasks/active/{name}/phase1.md` - {Title} (~{lines} lines)
+2. `.agentic/tasks/active/{name}/phase2.md` - {Title} (~{lines} lines)
+3. `.agentic/tasks/active/{name}/phase3.md` - {Title} (~{lines} lines)
 ...
 
 **Total Tasks:** ~{count} individual tasks across all phases
@@ -364,14 +364,14 @@ Before finalizing, ensure each generated file:
 
 **User types:**
 ```
-/blueprint-tasks .claude/blueprints/payment-service-blueprint.md
+/blueprint-tasks .agentic/blueprints/active/payment-service-blueprint.md
 ```
 
 **You should:**
 1. Read the blueprint file
 2. Read `.claude/config.json` for conventions
 3. Parse the implementation phases
-4. Generate task files in `.claude/tasks/payment-service/`
+4. Generate task files in `.agentic/tasks/active/payment-service/`
 5. Adapt all examples and paths to the configured tech stack
 6. Provide summary report with file list and next steps
 
