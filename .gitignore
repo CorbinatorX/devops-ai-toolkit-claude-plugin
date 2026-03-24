@@ -122,3 +122,4 @@ terraform.tfvars
 
 # Claude Code (keep plugin structure clean)
 # Do not ignore .claude-plugin/ - that's our manifest!
+.mcp.json
