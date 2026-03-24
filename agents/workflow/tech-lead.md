@@ -94,7 +94,7 @@ If `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS` is not enabled, the Tech Lead falls ba
 1. **Parse input** — accept one of:
    - A high-level feature description (free text)
    - A work item reference (ADO ID, Notion page URL, Jira key)
-   - A path to an existing blueprint (`.claude/blueprints/{name}-blueprint.md`)
+   - A path to an existing blueprint (`.agentic/blueprints/active/{name}-blueprint.md`)
 
 2. **Read project configuration**
    - `.claude/config.json` for tech stack, conventions, architecture pattern
@@ -126,7 +126,7 @@ If `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS` is not enabled, the Tech Lead falls ba
    **STOP CHECK:** Confirm the current branch is the new feature branch, not `main`. Do not proceed if still on `main`.
 
 4. **Initialize orchestration state**
-   - Create `.claude/tasks/{service}/orchestration-state.json`
+   - Create `.agentic/tasks/active/{service}/orchestration-state.json`
    - Record feature name, input source, start time, **branch name**
    - See `shared/orchestration/README.md` for schema
 
@@ -141,7 +141,7 @@ If `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS` is not enabled, the Tech Lead falls ba
    ```
    You are a Software Architect. Design architecture for: {feature_description}
 
-   Create a comprehensive blueprint at `.claude/blueprints/{service-name}-blueprint.md`.
+   Create a comprehensive blueprint at `.agentic/blueprints/active/{service-name}-blueprint.md`.
    Follow project conventions from `.claude/config.json`.
    Reference the software-architect agent definition for blueprint structure requirements.
 
@@ -161,7 +161,7 @@ If `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS` is not enabled, the Tech Lead falls ba
 3. **Wait for Architect completion** — receive idle notification when done
 
 4. **Validate blueprint output**
-   - Confirm file exists at `.claude/blueprints/{service-name}-blueprint.md`
+   - Confirm file exists at `.agentic/blueprints/active/{service-name}-blueprint.md`
    - Verify it contains all required sections (11+ sections per blueprint skill spec)
 
 5. **Update orchestration state** — mark architecture phase complete
@@ -169,7 +169,7 @@ If `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS` is not enabled, the Tech Lead falls ba
 ### Phase 2: Task Generation
 
 1. **Convert blueprint to phase tasks** — invoke `/blueprint-tasks` with the blueprint path
-   - This creates `.claude/tasks/{service-name}/phase{N}.md` files
+   - This creates `.agentic/tasks/active/{service-name}/phase{N}.md` files
 
 2. **Parse generated phase files** — extract:
    - Total number of phases
@@ -203,8 +203,8 @@ Spawn 1-3 Builder teammates based on task independence:
 ```
 You are a Builder. Implement tasks from the shared task list.
 
-Blueprint: `.claude/blueprints/{service-name}-blueprint.md`
-Phase file: `.claude/tasks/{service-name}/phase{N}.md`
+Blueprint: `.agentic/blueprints/active/{service-name}-blueprint.md`
+Phase file: `.agentic/tasks/active/{service-name}/phase{N}.md`
 Your file ownership: {list of files this teammate may edit}
 
 Follow the builder agent definition for implementation workflow.
@@ -233,14 +233,14 @@ After all phase tasks complete, spawn a Reviewer:
 ```
 You are a Reviewer running the Manager agent's scoring workflow.
 
-Phase file: `.claude/tasks/{service-name}/phase{N}.md`
-Blueprint: `.claude/blueprints/{service-name}-blueprint.md`
+Phase file: `.agentic/tasks/active/{service-name}/phase{N}.md`
+Blueprint: `.agentic/blueprints/active/{service-name}-blueprint.md`
 
 Run the full Manager review process:
 1. Execute automated checks (build, tests, linting, type checking)
 2. Validate acceptance criteria from the phase file
 3. Score across 6 categories (Completeness, Code Quality, Architecture, Security, Testing, Documentation)
-4. Generate status report at `.claude/tasks/{service-name}/phase{N}_status.md`
+4. Generate status report at `.agentic/tasks/active/{service-name}/phase{N}_status.md`
 5. Report your total score and letter grade
 ```
 
@@ -298,7 +298,12 @@ After all phases are delivered:
 1. Update orchestration state to `completed`
 2. Update work item status (if work item provider configured)
 3. Send completion notification (if Teams/Slack configured)
-4. Report summary to user:
+4. **Archive completed artifacts** — move from `active/` to `archive/`:
+   ```bash
+   mv .agentic/blueprints/active/{service-name}-blueprint.md .agentic/blueprints/archive/
+   mv .agentic/tasks/active/{service-name}/ .agentic/tasks/archive/
+   ```
+5. Report summary to user:
    ```
    Feature delivery complete: {feature_name}
 
@@ -306,11 +311,12 @@ After all phases are delivered:
    Total PRs: {list of PR URLs}
    Review scores: {per-phase scores}
    Duration: {elapsed time}
+   Artifacts archived to .agentic/*/archive/
    ```
 
 ## Orchestration State Management
 
-**State file location:** `.claude/tasks/{service}/orchestration-state.json`
+**State file location:** `.agentic/tasks/active/{service}/orchestration-state.json`
 
 The Tech Lead persists all progress to disk so that a new session can resume from the last checkpoint if the lead session is interrupted.
 
@@ -464,7 +470,7 @@ Phase {N} failed review after 2 rework attempts.
 Score: {score}/100 (Grade {grade})
 Human intervention required.
 
-Status report: .claude/tasks/{service}/phase{N}_status.md
+Status report: .agentic/tasks/active/{service}/phase{N}_status.md
 ```
 
 **Orchestration complete:**
@@ -526,7 +532,7 @@ Phase {N} complete — human approval required.
 
 PR: {pr_url}
 Score: {score}/100 (Grade {grade})
-Status report: .claude/tasks/{service}/phase{N}_status.md
+Status report: .agentic/tasks/active/{service}/phase{N}_status.md
 
 Review the PR and reply:
 - "approved" / "looks good" — continue to next phase
@@ -634,7 +640,7 @@ Retrying once... If retry fails, falling back to sequential execution for this s
 ```
 Orchestration state file is corrupted or unreadable.
 
-Path: .claude/tasks/{service}/orchestration-state.json
+Path: .agentic/tasks/active/{service}/orchestration-state.json
 Error: {error_message}
 
 Options:

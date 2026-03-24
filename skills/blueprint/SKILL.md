@@ -19,6 +19,21 @@ Creates comprehensive architecture blueprints for new services or features follo
 
 This Skill delegates the actual blueprint creation to the **software-architect** agent, which provides expert architectural guidance.
 
+## Path Configuration
+
+Blueprint and task paths default to `.agentic/blueprints/active/` and `.agentic/tasks/active/`. These can be overridden via `.claude/config.json`:
+
+```json
+{
+  "documentation": {
+    "blueprintPath": ".agentic/blueprints/active",
+    "taskPath": ".agentic/tasks/active"
+  }
+}
+```
+
+If `documentation.blueprintPath` is set in config, use that path instead of the default.
+
 ## Auto-Discovery Triggers
 
 This Skill automatically activates when users mention:
@@ -90,7 +105,7 @@ Invoke the **software-architect** agent to create the blueprint. The agent will 
 
 ### 5. Save Blueprint
 
-**File Location**: `.claude/blueprints/{service-or-feature-name}-blueprint.md`
+**File Location**: `.agentic/blueprints/active/{service-or-feature-name}-blueprint.md`
 
 **Filename Convention**:
 - Derive from service/feature description
@@ -102,7 +117,7 @@ Invoke the **software-architect** agent to create the blueprint. The agent will 
 
 **Create directory if needed**:
 ```bash
-mkdir -p .claude/blueprints
+mkdir -p .agentic/blueprints/active
 ```
 
 ### 6. Provide Summary
@@ -249,12 +264,12 @@ Before finalizing blueprint, ensure:
 - [ ] Addresses security and performance
 - [ ] Considers testing strategy
 - [ ] Documents integration points
-- [ ] Saves to `.claude/blueprints/` directory
+- [ ] Saves to `.agentic/blueprints/active/` directory
 
 ## Integration with Workflow
 
 **Downstream Skills:**
-- `/blueprint-tasks` command - Converts blueprint into phase task files (`.claude/tasks/`)
+- `/blueprint-tasks` command - Converts blueprint into phase task files (`.agentic/tasks/active/`)
 - `implement-task` Skill - Builder references blueprint for architectural context
 - `review-task` Skill - Manager validates implementation against blueprint
 
@@ -295,7 +310,7 @@ Please provide more information:
 
 ### File Write Errors
 
-If unable to create `.claude/blueprints/` directory or save file:
+If unable to create `.agentic/blueprints/active/` directory or save file:
 ```
 ❌ Failed to save blueprint
 
@@ -304,7 +319,7 @@ Error: {error message}
 Troubleshooting:
 - Check write permissions for .claude/ directory
 - Verify disk space availability
-- Try saving manually to: .claude/blueprints/{name}-blueprint.md
+- Try saving manually to: .agentic/blueprints/active/{name}-blueprint.md
 ```
 
 ## Notes

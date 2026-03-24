@@ -14,9 +14,24 @@ auto-discover:
 
 ## Purpose
 
-Focused implementation of specific tasks from phase files (`.claude/tasks/`) with strict scope and discipline. The Builder agent executes tasks exactly as specified in the blueprint, updating checkboxes and generating implementation reports.
+Focused implementation of specific tasks from phase files (`.agentic/tasks/active/`) with strict scope and discipline. The Builder agent executes tasks exactly as specified in the blueprint, updating checkboxes and generating implementation reports.
 
 This Skill delegates to the **builder** agent for focused, disciplined task execution.
+
+## Path Configuration
+
+Task and blueprint paths default to `.agentic/tasks/active/` and `.agentic/blueprints/active/`. These can be overridden via `.claude/config.json`:
+
+```json
+{
+  "documentation": {
+    "blueprintPath": ".agentic/blueprints/active",
+    "taskPath": ".agentic/tasks/active"
+  }
+}
+```
+
+If `documentation.taskPath` is set in config, use that path instead of the default.
 
 ## Auto-Discovery Triggers
 
@@ -54,9 +69,9 @@ If short format provided, infer from context or ask user for clarification.
 
 ### 2. Read Phase File
 
-**Location pattern**: `.claude/tasks/{service-or-feature-name}/{phase}.md`
+**Location pattern**: `.agentic/tasks/active/{service-or-feature-name}/{phase}.md`
 
-Example: `.claude/tasks/payment-service/phase1.md`
+Example: `.agentic/tasks/active/payment-service/phase1.md`
 
 Find the task section by searching for numbered headers: `#### {task-number}`
 
@@ -104,7 +119,7 @@ npm test
 
 **IMPORTANT**: Stay focused. Only read:
 1. The task section from phase file
-2. The blueprint (if architectural context needed): `.claude/blueprints/{name}-blueprint.md`
+2. The blueprint (if architectural context needed): `.agentic/blueprints/active/{name}-blueprint.md`
 3. Existing files (if modifying, not creating)
 4. Config file: `.claude/config.json` for conventions
 
@@ -160,7 +175,7 @@ Add completion note (optional):
 ## 🔨 Builder Report: Task {task-number} Complete
 
 **Task**: {task-title}
-**Phase File**: `.claude/tasks/{service}/{phase}.md`
+**Phase File**: `.agentic/tasks/active/{service}/{phase}.md`
 **Implementation Date**: {current-date}
 
 ### 📁 Files Created/Modified
@@ -250,7 +265,7 @@ Before reporting completion:
 ```
 ❌ Phase File Not Found
 
-Phase file not found at: .claude/tasks/{service}/{phase}.md
+Phase file not found at: .agentic/tasks/active/{service}/{phase}.md
 
 Troubleshooting:
 - Verify service/feature name is correct

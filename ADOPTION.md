@@ -158,10 +158,10 @@ Skills automatically trigger from natural language. No slash commands needed!
 **What it does**:
 1. Delegates to **software-architect** agent
 2. Creates 11+ section architecture blueprint
-3. Saves to `.claude/blueprints/{name}-blueprint.md`
+3. Saves to `.agentic/blueprints/active/{name}-blueprint.md`
 4. Includes domain modeling, API specs, tech stack, multi-phase plans
 
-**Output**: `.claude/blueprints/payment-processing-blueprint.md`
+**Output**: `.agentic/blueprints/active/payment-processing-blueprint.md`
 
 ### pickup-bug Skill
 
@@ -214,13 +214,13 @@ Skills automatically trigger from natural language. No slash commands needed!
 ```
 
 **What it does**:
-1. Reads task from `.claude/tasks/payment-service/phase1.md`
+1. Reads task from `.agentic/tasks/active/payment-service/phase1.md`
 2. Delegates to **builder** agent
 3. Implements ONLY files specified in task annotations
 4. Updates checkbox: `- [ ] 2.1 Task` → `- [x] 2.1 Task`
 5. Generates implementation report
 
-**Required**: Phase file at `.claude/tasks/{service}/{phase}.md` with tasks
+**Required**: Phase file at `.agentic/tasks/active/{service}/{phase}.md` with tasks
 
 **Format**:
 ```markdown
@@ -253,7 +253,7 @@ Skills automatically trigger from natural language. No slash commands needed!
    - Testing (coverage ≥80%?)
    - Documentation (updated?)
 4. Assigns letter grade: S/A/B/C/D/F
-5. Generates `.claude/tasks/{service}/{phase}_status.md` with findings
+5. Generates `.agentic/tasks/active/{service}/{phase}_status.md` with findings
 
 **Pass threshold**: 75/100 points (B grade)
 **Production-ready**: 85/100 points (A grade)

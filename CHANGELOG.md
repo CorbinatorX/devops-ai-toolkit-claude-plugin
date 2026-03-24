@@ -5,6 +5,32 @@ All notable changes to the Agentic Toolkit will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0] - 2026-03-24
+
+### Changed
+
+- **BREAKING: Default artifact paths changed from `.claude/` to `.agentic/`**
+  - Blueprints: `.claude/blueprints/` → `.agentic/blueprints/active/`
+  - Tasks: `.claude/tasks/` → `.agentic/tasks/active/`
+  - Orchestration state, status reports, and phase files follow accordingly
+  - Separates Claude Code config (`.claude/`) from tool-agnostic workflow artifacts (`.agentic/`)
+  - `active/archive/` lifecycle pattern: in-progress work in `active/`, completed work moved to `archive/` after PR merge
+- All 4 skills (blueprint, implement-task, review-task, orchestrate), 4 agents (software-architect, builder, manager, tech-lead), and workflow commands updated with new paths
+- Config example updated: `documentation.blueprintPath` and `documentation.taskPath` now default to `.agentic/` paths
+
+### Added
+
+- **Path Configuration** sections in all skills — paths are overridable via `.claude/config.json` → `documentation.blueprintPath` and `documentation.taskPath`
+
+### Migration
+
+To migrate an existing project:
+1. Create `.agentic/` structure: `mkdir -p .agentic/blueprints/{active,archive} .agentic/tasks/{active,archive}`
+2. Move completed blueprints: `git mv .claude/blueprints/*.md .agentic/blueprints/archive/`
+3. Move completed tasks: `for d in .claude/tasks/*/; do git mv "$d" .agentic/tasks/archive/; done`
+4. Update `.claude/config.json` documentation paths if customized
+5. Update any project-specific commands/docs that reference old paths
+
 ## [0.1.0] - 2025-01-XX
 
 ### Added
@@ -132,7 +158,7 @@ claude-code plugin install CorbinatorX/devops-ai-toolkit-claude-plugin
 - **Parallel Builder teammates** — Up to 3 builders with file ownership assignments and shared task self-claiming
 - **Quality hooks** — TaskCompleted (build+test validation) and TeammateIdle (acceptance criteria checking)
 - **Review loop with rework** — Max 2 rework attempts before escalating to human
-- **Orchestration state persistence** — JSON state file at `.claude/tasks/{service}/orchestration-state.json`
+- **Orchestration state persistence** — JSON state file at `.agentic/tasks/active/{service}/orchestration-state.json`
 - **Continuation prompts** — Structured resume prompts for seamless crash recovery
 - **Configurable thresholds** — Review scores, max rework attempts, max teammates, human approval gates
 - **Work item status updates** — Milestone-based updates to ADO/Notion/Jira work items

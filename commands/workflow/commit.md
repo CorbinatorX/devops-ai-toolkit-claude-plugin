@@ -158,14 +158,14 @@ Tests:
 
 Check for blueprint or task references in:
 - Branch name (e.g., `feature/payment-service-phase1`)
-- Modified files (e.g., `.claude/tasks/payment-service/phase1.md`)
+- Modified files (e.g., `.agentic/tasks/active/payment-service/phase1.md`)
 
 If found, include in commit body:
 ```
 feat(payment): implement payment processing service
 
 Implements Phase 1, Task 2.1 from payment-service blueprint.
-See .claude/tasks/payment-service/phase1.md for details.
+See .agentic/tasks/active/payment-service/phase1.md for details.
 ```
 
 ### 7. Create Commit

@@ -13,13 +13,13 @@ The orchestration state file is the **single source of truth** for multi-phase d
 ## State File Location
 
 ```
-.claude/tasks/{service-name}/orchestration-state.json
+.agentic/tasks/active/{service-name}/orchestration-state.json
 ```
 
 **Examples:**
-- `.claude/tasks/payment-service/orchestration-state.json`
-- `.claude/tasks/user-profile/orchestration-state.json`
-- `.claude/tasks/notification-system/orchestration-state.json`
+- `.agentic/tasks/active/payment-service/orchestration-state.json`
+- `.agentic/tasks/active/user-profile/orchestration-state.json`
+- `.agentic/tasks/active/notification-system/orchestration-state.json`
 
 ## Schema
 
@@ -33,7 +33,7 @@ The orchestration state file is the **single source of truth** for multi-phase d
     "provider": "azure-devops",
     "url": "https://dev.azure.com/org/project/_workitems/edit/25186"
   },
-  "blueprint_path": ".claude/blueprints/payment-service-blueprint.md",
+  "blueprint_path": ".agentic/blueprints/active/payment-service-blueprint.md",
   "branch_name": "feature/25186-payment-service",
   "total_phases": 4,
   "current_phase": 2,
@@ -75,7 +75,7 @@ The orchestration state file is the **single source of truth** for multi-phase d
       "attempt": 1,
       "score": 88,
       "grade": "A",
-      "status_file": ".claude/tasks/payment-service/phase1_status.md",
+      "status_file": ".agentic/tasks/active/payment-service/phase1_status.md",
       "timestamp": "2026-03-07T11:25:00Z"
     }
   ],
@@ -217,8 +217,8 @@ Resume orchestrating payment-service.
 Phase 1 complete (PR #42, score 88/100).
 Phase 2 in progress - tasks 1.1, 1.2, 2.1, 2.2 done.
 Spawn builders for remaining tasks 2.3, 3.1, 3.2, 4.1, 4.2, 5.1.
-Blueprint: .claude/blueprints/payment-service-blueprint.md
-Phase file: .claude/tasks/payment-service/phase2.md
+Blueprint: .agentic/blueprints/active/payment-service-blueprint.md
+Phase file: .agentic/tasks/active/payment-service/phase2.md
 ```
 
 **During review:**
@@ -226,8 +226,8 @@ Phase file: .claude/tasks/payment-service/phase2.md
 Resume orchestrating payment-service.
 Phase 1 complete (PR #42, score 88/100).
 Phase 2 implementation complete. Spawn reviewer to run Manager scoring workflow.
-Blueprint: .claude/blueprints/payment-service-blueprint.md
-Phase file: .claude/tasks/payment-service/phase2.md
+Blueprint: .agentic/blueprints/active/payment-service-blueprint.md
+Phase file: .agentic/tasks/active/payment-service/phase2.md
 ```
 
 **During rework:**
@@ -274,7 +274,7 @@ resume_orchestration(state_file_path):
 ```markdown
 When Tech Lead starts orchestration:
 
-1. Create directory: mkdir -p .claude/tasks/{service-name}
+1. Create directory: mkdir -p .agentic/tasks/active/{service-name}
 2. Write initial state:
    {
      "version": "1.0",

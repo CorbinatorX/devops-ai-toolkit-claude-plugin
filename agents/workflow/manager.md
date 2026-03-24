@@ -85,7 +85,7 @@ Extract service/feature name, phase number, and task number.
 
 ### 2. Read Phase File
 
-**Location**: `.claude/tasks/{service-or-feature-name}/{phase}.md`
+**Location**: `.agentic/tasks/active/{service-or-feature-name}/{phase}.md`
 
 Find task section by searching for `#### {task-number}`.
 
@@ -182,7 +182,7 @@ For each criterion:
 
 ### 6. Generate Scored Review Report
 
-**IMPORTANT**: Always write to: `.claude/tasks/{service-or-feature}/{phase}_status.md`
+**IMPORTANT**: Always write to: `.agentic/tasks/active/{service-or-feature}/{phase}_status.md`
 
 ## Scoring System
 

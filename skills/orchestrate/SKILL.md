@@ -19,6 +19,21 @@ Orchestrates fully autonomous multi-phase feature delivery using **Claude Code A
 
 This Skill delegates orchestration to the **tech-lead** agent, which coordinates the full lifecycle using Agent Teams.
 
+## Path Configuration
+
+Blueprint and task paths default to `.agentic/blueprints/active/` and `.agentic/tasks/active/`. These can be overridden via `.claude/config.json`:
+
+```json
+{
+  "documentation": {
+    "blueprintPath": ".agentic/blueprints/active",
+    "taskPath": ".agentic/tasks/active"
+  }
+}
+```
+
+If these paths are set in config, use them instead of the defaults throughout this workflow.
+
 ## Auto-Discovery Triggers
 
 This Skill automatically activates when users mention:
@@ -56,7 +71,7 @@ The Skill accepts three input types:
 
 **3. Existing blueprint path:**
 ```
-"Orchestrate from .claude/blueprints/payment-service-blueprint.md"
+"Orchestrate from .agentic/blueprints/active/payment-service-blueprint.md"
 ```
 
 ## Shared Modules
@@ -205,10 +220,10 @@ Run /configure to set up project configuration first.
 Create the orchestration state file:
 
 ```bash
-mkdir -p .claude/tasks/{service-name}
+mkdir -p .agentic/tasks/active/{service-name}
 ```
 
-Write initial state to `.claude/tasks/{service-name}/orchestration-state.json`:
+Write initial state to `.agentic/tasks/active/{service-name}/orchestration-state.json`:
 
 ```json
 {
@@ -290,7 +305,7 @@ Create an agent team for {service-name} development.
 Spawn an architect teammate with this prompt:
 "You are a Software Architect. Design architecture for: {feature_description}
 
-Create a comprehensive blueprint at .claude/blueprints/{service-name}-blueprint.md.
+Create a comprehensive blueprint at .agentic/blueprints/active/{service-name}-blueprint.md.
 Follow project conventions from .claude/config.json.
 Reference the software-architect agent definition for blueprint structure requirements.
 
@@ -335,8 +350,8 @@ Create a new agent team for {service-name} phase {N}.
 Spawn a builder teammate with this prompt:
 "You are a Builder. Implement tasks from the shared task list.
 
-Blueprint: .claude/blueprints/{service-name}-blueprint.md
-Phase file: .claude/tasks/{service-name}/phase{N}.md
+Blueprint: .agentic/blueprints/active/{service-name}-blueprint.md
+Phase file: .agentic/tasks/active/{service-name}/phase{N}.md
 Your file ownership: {list of files this teammate may edit}
 
 Follow the builder agent definition for implementation workflow.
@@ -355,14 +370,14 @@ Run build and tests after each task."
 Spawn a reviewer teammate with this prompt:
 "You are a Reviewer running the Manager agent's scoring workflow.
 
-Phase file: .claude/tasks/{service-name}/phase{N}.md
-Blueprint: .claude/blueprints/{service-name}-blueprint.md
+Phase file: .agentic/tasks/active/{service-name}/phase{N}.md
+Blueprint: .agentic/blueprints/active/{service-name}-blueprint.md
 
 Run the full Manager review process:
 1. Execute automated checks (build, tests, linting, type checking)
 2. Validate acceptance criteria from the phase file
 3. Score across 6 categories (Completeness, Code Quality, Architecture, Security, Testing, Documentation)
-4. Generate status report at .claude/tasks/{service-name}/phase{N}_status.md
+4. Generate status report at .agentic/tasks/active/{service-name}/phase{N}_status.md
 5. Report your total score and letter grade"
 ```
 
@@ -400,8 +415,21 @@ When all phases are delivered:
 | 2 | {title} | {score} | {grade} | #{number} |
 
 ### State File
-.claude/tasks/{service-name}/orchestration-state.json (status: completed)
+.agentic/tasks/active/{service-name}/orchestration-state.json (status: completed)
 ```
+
+**Archive completed artifacts:**
+After all phases are delivered and PRs created, move artifacts from `active/` to `archive/`:
+
+```bash
+# Move blueprint to archive
+mv .agentic/blueprints/active/{service-name}-blueprint.md .agentic/blueprints/archive/
+
+# Move task folder to archive
+mv .agentic/tasks/active/{service-name}/ .agentic/tasks/archive/
+```
+
+This keeps `active/` clean for the next piece of work. The archived artifacts remain available for reference.
 
 **If work item provider configured:**
 - Update work item state to "Resolved" / "Done"
@@ -456,7 +484,7 @@ Check:
 ```
 Architect teammate failed to generate blueprint.
 
-State file: .claude/tasks/{service-name}/orchestration-state.json
+State file: .agentic/tasks/active/{service-name}/orchestration-state.json
 Status: architecture (incomplete)
 
 Options:
@@ -470,7 +498,7 @@ Options:
 Phase {N} is blocked after 2 rework attempts.
 
 Latest score: {score}/100 (Grade {grade})
-Status report: .claude/tasks/{service-name}/phase{N}_status.md
+Status report: .agentic/tasks/active/{service-name}/phase{N}_status.md
 
 The following issues could not be automatically resolved:
 - {issue 1}

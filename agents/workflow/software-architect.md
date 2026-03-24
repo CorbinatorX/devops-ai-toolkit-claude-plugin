@@ -62,7 +62,7 @@ This agent automatically activates when users mention:
 - Reviews work with `manager` agent for quality validation
 
 **Outputs:**
-- Comprehensive architecture blueprints saved to `.claude/blueprints/{name}-blueprint.md`
+- Comprehensive architecture blueprints saved to `.agentic/blueprints/active/{name}-blueprint.md`
 - Multi-phase implementation plans (4-6 weeks)
 - Data models, API specifications, integration patterns
 - Technical considerations and trade-off analysis
@@ -160,7 +160,7 @@ Studies `.claude/examples/` directory (if exists) to match structure and detail 
 
 ## Example Output
 
-**Blueprint File** (`.claude/blueprints/payment-service-blueprint.md`):
+**Blueprint File** (`.agentic/blueprints/active/payment-service-blueprint.md`):
 - 300-500 lines of comprehensive architecture documentation
 - Code examples in project's programming language
 - Database schema with indexes
