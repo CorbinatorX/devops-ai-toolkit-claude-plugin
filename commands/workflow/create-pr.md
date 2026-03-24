@@ -504,6 +504,27 @@ Support additional parameters:
 9. /trello-complete        - Mark complete (optional)
 ```
 
+## Post-PR: Archive Completed Artifacts
+
+After the PR is created, if the branch implements a complete blueprint/phase set, archive the artifacts:
+
+```bash
+# Move completed blueprint to archive (if all phases delivered)
+mv .agentic/blueprints/active/{service-name}-blueprint.md .agentic/blueprints/archive/
+
+# Move completed task folder to archive
+mv .agentic/tasks/active/{service-name}/ .agentic/tasks/archive/
+```
+
+**When to archive:**
+- All tasks in the phase/blueprint are complete
+- The PR has been created successfully
+- No further phases remain for this blueprint
+
+**When NOT to archive:**
+- Multi-phase blueprints with remaining phases — keep in `active/` until all phases are PR'd
+- If only a subset of tasks were implemented
+
 ## Quality Checklist
 
 Before creating PR, verify:

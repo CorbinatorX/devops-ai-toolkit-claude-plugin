@@ -298,7 +298,12 @@ After all phases are delivered:
 1. Update orchestration state to `completed`
 2. Update work item status (if work item provider configured)
 3. Send completion notification (if Teams/Slack configured)
-4. Report summary to user:
+4. **Archive completed artifacts** — move from `active/` to `archive/`:
+   ```bash
+   mv .agentic/blueprints/active/{service-name}-blueprint.md .agentic/blueprints/archive/
+   mv .agentic/tasks/active/{service-name}/ .agentic/tasks/archive/
+   ```
+5. Report summary to user:
    ```
    Feature delivery complete: {feature_name}
 
@@ -306,6 +311,7 @@ After all phases are delivered:
    Total PRs: {list of PR URLs}
    Review scores: {per-phase scores}
    Duration: {elapsed time}
+   Artifacts archived to .agentic/*/archive/
    ```
 
 ## Orchestration State Management

@@ -418,6 +418,19 @@ When all phases are delivered:
 .agentic/tasks/active/{service-name}/orchestration-state.json (status: completed)
 ```
 
+**Archive completed artifacts:**
+After all phases are delivered and PRs created, move artifacts from `active/` to `archive/`:
+
+```bash
+# Move blueprint to archive
+mv .agentic/blueprints/active/{service-name}-blueprint.md .agentic/blueprints/archive/
+
+# Move task folder to archive
+mv .agentic/tasks/active/{service-name}/ .agentic/tasks/archive/
+```
+
+This keeps `active/` clean for the next piece of work. The archived artifacts remain available for reference.
+
 **If work item provider configured:**
 - Update work item state to "Resolved" / "Done"
 - Add completion comment with PR links
