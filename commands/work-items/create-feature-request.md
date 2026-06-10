@@ -29,7 +29,8 @@ Read the plugin configuration from `.claude/techops-config.json` in the current 
     "organization": "{organization}",
     "project": "ERM",
     "area_path": "ERM\\Devops",
-    "iteration_path": "ERM\\dops-backlog"
+    "iteration_path": "ERM\\dops-backlog",
+    "attribution": "TechOps"
   },
   "teams": {
     "flow_url": "https://prod-XX.uksouth.logic.azure.com:443/workflows/...",
@@ -47,6 +48,9 @@ Read the plugin configuration from `.claude/techops-config.json` in the current 
 - `teams.flow_url` - Logic App trigger URL (for message ID capture)
 - `teams.team_id` - Microsoft Teams Team ID
 - `teams.channel_id` - Microsoft Teams Channel ID
+
+**Optional fields:**
+- `azure_devops.attribution` - value for the `Custom.Attribution` picklist (defaults to `TechOps`); must be one of the org's allowed product/team values
 
 **Fallback:** If `teams.flow_url` is not set, fall back to `teams.webhook_url` (legacy mode, no message ID capture).
 
@@ -94,7 +98,7 @@ Use `mcp__azure-devops__wit_create_work_item` to create the user story:
     {"name": "System.Tags", "value": "{product}"},
     {"name": "Microsoft.VSTS.Common.ValueArea", "value": "Business"},
     {"name": "{CustomField}.PaidWork", "value": "0"},
-    {"name": "Custom.Attribution", "value": "FeatureRequest"}
+    {"name": "Custom.Attribution", "value": "TechOps"}
   ]
 }
 ```
@@ -108,14 +112,14 @@ Use `mcp__azure-devops__wit_create_work_item` to create the user story:
 - **System.State**: `New`
 - **Microsoft.VSTS.Common.ValueArea**: `Business` (default for features)
 - **{CustomField}.PaidWork**: `0`
-- **Custom.Attribution**: `FeatureRequest`
+- **Custom.Attribution**: `azure_devops.attribution` from config if set, otherwise `TechOps`
 
 **IMPORTANT Notes**:
 1. Area Path and Iteration Path use **backslashes** (`\`), not forward slashes
 2. Description and AcceptanceCriteria fields must use `"format": "Html"`
 3. ValueArea is required (use "Business" for user-facing features, "Architectural" for technical work)
 4. PaidWork is required (default to `"0"`)
-5. Attribution is required (use `"FeatureRequest"` to mark these as community/team requests)
+5. Attribution is required and is a **picklist of product/team names** (e.g. DueDiligence, EthicsRM, ExportControls, PostAward, PreAward, ReDA, ResearchFlow, TechOps, TechPlatform) — free-text values like "FeatureRequest" are rejected with a RuleValidationException. Use `azure_devops.attribution` from `techops-config.json` if set, otherwise default to `"TechOps"`. If the value is rejected, query the allowed list: `GET https://dev.azure.com/{organization}/{project}/_apis/wit/workitemtypes/User%20Story/fields/Custom.Attribution?$expand=allowedValues&api-version=7.1`
 
 ### Step 3: Read and Render Teams Template
 
@@ -316,7 +320,7 @@ The feature request has been posted to the {Product} Teams channel. Team members
 | (Fixed) | System.Tags | Tags | `{product}` |
 | (Fixed) | Microsoft.VSTS.Common.ValueArea | Picklist | `Business` |
 | (Fixed) | {CustomField}.PaidWork | Boolean | `0` |
-| (Fixed) | Custom.Attribution | String | `FeatureRequest` |
+| (Config) | Custom.Attribution | Picklist | `azure_devops.attribution`, default `TechOps` |
 | (Auto) | Custom.TeamsChannelMessageId | String | Teams message ID from Power Automate response |
 
 ## DO
@@ -329,7 +333,7 @@ The feature request has been posted to the {Product} Teams channel. Team members
 ✅ Build complete ADO URL with work item ID
 ✅ Post to Teams using MessageCard format
 ✅ Use "Business" for ValueArea (user-facing features)
-✅ Mark with Attribution "FeatureRequest"
+✅ Set Attribution from `azure_devops.attribution` config (default "TechOps" — must be a valid picklist value)
 ✅ Handle errors gracefully
 ✅ Display clear success summary
 ✅ Include next steps in output
@@ -390,7 +394,7 @@ Please manually share the link in the Teams channel if needed.
 3. **HTML Format**: Description and AcceptanceCriteria fields require `"format": "Html"` parameter
 4. **ValueArea**: Use `"Business"` for user-facing features, `"Architectural"` for technical/infrastructure work
 5. **Required Fields**: ValueArea, PaidWork, and Attribution are all required fields
-6. **Attribution**: Use `"FeatureRequest"` to mark these as community-generated requests
+6. **Attribution**: Picklist of product/team names — use `azure_devops.attribution` from config, defaulting to `"TechOps"`; `"FeatureRequest"` is not a valid value
 7. **Teams Webhook**: URL is hardcoded in this command - do not prompt user for it
 8. **Template File**: Located at `docs/chat_templates/feature-request-post.md.template`
 9. **MessageCard Theme**: Use color `FFB900` (yellow/gold) to indicate feature requests/ideas

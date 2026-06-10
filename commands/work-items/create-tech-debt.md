@@ -85,7 +85,7 @@ For each tech debt item, map fields as follows:
 **Fixed Metadata (always set):**
 - `System.AreaPath` = "ERM\Devops"
 - `System.IterationPath` = "ERM\dops-backlog"
-- `Custom.Attribution` = "TechDebt"
+- `Custom.Attribution` = `azure_devops.attribution` from `techops-config.json` if set, otherwise "TechOps" (picklist of product/team names — free-text values like "TechDebt" are rejected)
 - `System.State` = "New" (for new items)
 
 ### Step 3: Check for Existing Work Items
@@ -119,7 +119,7 @@ Use `mcp__azure-devops__wit_create_work_item`:
     {"name": "System.Tags", "value": "High-Priority; Phase2; TechDebt"},
     {"name": "System.AreaPath", "value": "ERM\\Devops"},
     {"name": "System.IterationPath", "value": "ERM\\dops-backlog"},
-    {"name": "Custom.Attribution", "value": "TechDebt"}
+    {"name": "Custom.Attribution", "value": "TechOps"}
   ]
 }
 ```
